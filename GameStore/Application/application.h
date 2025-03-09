@@ -1,0 +1,7 @@
+#ifndef APPLICATION_APPLICATION_H_
+#define APPLICATION_APPLICATION_H_
+
+class Application {
+};
+
+#endif  // APPLICATION_APPLICATION_H_
