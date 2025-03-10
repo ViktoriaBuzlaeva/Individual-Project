@@ -27,4 +27,4 @@
 
 ## Схема классов
 
-![Схема классов](source/Diagram.png)
+![Схема классов](source/Diagram.jpg)
