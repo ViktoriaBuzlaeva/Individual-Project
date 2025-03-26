@@ -28,3 +28,4 @@
 ## Схема классов
 
 ![Схема классов](source/Diagram.jpg)
+[Исследование std::vector](/source/STL_vector.docx)
