@@ -1,3 +1,5 @@
+// Copyright 2025 Viktoria Buzlaeva
+
 #include <iostream>
 #include "../Application/application.h"
 #include "../Date/date.h"

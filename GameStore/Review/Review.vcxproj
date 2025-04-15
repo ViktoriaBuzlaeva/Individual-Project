@@ -70,6 +70,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>D:\GitHub\Individual-Project\GameStore\User;D:\GitHub\Individual-Project\GameStore\Time;D:\GitHub\Individual-Project\GameStore\Date;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -104,11 +107,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\GitHub\Individual-Project\GameStore\User;D:\GitHub\Individual-Project\GameStore\Time;D:\GitHub\Individual-Project\GameStore\Date;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>D:\GitHub\Individual-Project\GameStore\User;D:\GitHub\Individual-Project\GameStore\Time;D:\GitHub\Individual-Project\GameStore\Date;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -131,6 +138,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="review.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Date\Date.vcxproj">
+      <Project>{3d12c0d5-477c-4a7a-8600-ddd3ea28c573}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Time\Time.vcxproj">
+      <Project>{6b550c82-237a-40f1-a8f8-f17498f28918}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

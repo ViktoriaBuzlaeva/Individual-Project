@@ -1,5 +1,7 @@
-#ifndef DATE_DATE_H_
-#define DATE_DATE_H_
+// Copyright 2025 Viktoria Buzlaeva
+
+#ifndef GAMESTORE_DATE_DATE_H_
+#define GAMESTORE_DATE_DATE_H_
 
 class Date {
     int _year;
@@ -7,4 +9,4 @@ class Date {
     int _day;
 };
 
-#endif  // DATE_DATE_H_
+#endif  // GAMESTORE_DATE_DATE_H_

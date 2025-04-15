@@ -70,6 +70,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>D:\GitHub\Individual-Project\GameStore\User;D:\GitHub\Individual-Project\GameStore\Game;D:\GitHub\Individual-Project\GameStore\Developer;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -104,11 +107,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\GitHub\Individual-Project\GameStore\User;D:\GitHub\Individual-Project\GameStore\Game;D:\GitHub\Individual-Project\GameStore\Developer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>D:\GitHub\Individual-Project\GameStore\User;D:\GitHub\Individual-Project\GameStore\Game;D:\GitHub\Individual-Project\GameStore\Developer;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -131,6 +138,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gamestore.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Developer\Developer.vcxproj">
+      <Project>{19cf3902-f84d-42ce-88ca-155af72185ae}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Game\Game.vcxproj">
+      <Project>{afaf22dc-de05-4e08-a060-49967ff3849d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\User\User.vcxproj">
+      <Project>{7a85376a-e421-454a-8a98-4604daa7dba2}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

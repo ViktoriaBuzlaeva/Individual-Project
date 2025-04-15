@@ -1,5 +1,7 @@
-#ifndef TIME_CTIME_H_
-#define TIME_CTIME_H_
+// Copyright 2025 Viktoria Buzlaeva
+
+#ifndef GAMESTORE_TIME_CTIME_H_
+#define GAMESTORE_TIME_CTIME_H_
 
 class Time {
     int _hours;
@@ -7,4 +9,4 @@ class Time {
     int _seconds;
 };
 
-#endif  // TIME_CTIME_H_
+#endif  // GAMESTORE_TIME_CTIME_H_

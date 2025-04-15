@@ -132,6 +132,17 @@
   <ItemGroup>
     <ClInclude Include="game.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Date\Date.vcxproj">
+      <Project>{3d12c0d5-477c-4a7a-8600-ddd3ea28c573}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Developer\Developer.vcxproj">
+      <Project>{19cf3902-f84d-42ce-88ca-155af72185ae}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Review\Review.vcxproj">
+      <Project>{3df1931c-2378-455f-b789-661b0d8e030b}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
