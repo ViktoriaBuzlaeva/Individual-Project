@@ -1,3 +1,3 @@
 // Copyright 2025 Viktoria Buzlaeva
 
-#include "../Application/application.h"
+#include "/GitHub/Individual-Project/GameStore/Application/application.h"
