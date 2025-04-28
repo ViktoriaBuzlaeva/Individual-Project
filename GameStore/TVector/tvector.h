@@ -12,8 +12,9 @@ class TVector {
     T* _data;
     size_t _capacity;
     size_t _size;
-public:
-    TVector(size_t size = 0) noexcept;
+
+ public:
+    explicit TVector(size_t size = 0) noexcept;
     TVector(size_t, const T*) noexcept;
     TVector(size_t, std::initializer_list<T>) noexcept;
     TVector(std::initializer_list<T>) noexcept;
@@ -52,8 +53,8 @@ public:
     void clear() noexcept;
 
     void shrink_to_fit() noexcept;
-    void reserve(size_t) noexcept;
-    void resize(size_t) noexcept;
+    void reserve(static_cast<size_t>) noexcept;
+    void resize(static_cast<size_t>) noexcept;
 
     TVector<T>& operator = (const TVector<T>&);
     bool operator == (const TVector<T>&) const;
@@ -63,8 +64,8 @@ public:
     template <class T>
     friend void shuffle(TVector<T>&) noexcept;
     template <class T>
-    friend void sort(TVector<T>&) noexcept;
-	template <class T>
+    friend void sort_hoare(TVector<T>&) noexcept;
+    template <class T>
     friend void sort_rec(TVector<T>&, size_t, size_t) noexcept;
 
     template <class T>
@@ -73,7 +74,8 @@ public:
     friend int find_last(const TVector<T>&, T);
     template <class T>
     friend int* find_all(const TVector<T>&, T);
-private:
+
+ private:
     size_t _deleted;
     State* _states;
 
