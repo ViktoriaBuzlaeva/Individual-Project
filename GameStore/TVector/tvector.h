@@ -123,7 +123,7 @@ TVector<T>::TVector(size_t size, const T* data) noexcept : _size(size) {
 }
 
 template <class T>
-TVector<T>::TVector(size_t size, std::initializer_list<T> data) noexcept : 
+TVector<T>::TVector(size_t size, std::initializer_list<T> data) noexcept :
     _size(size) {
     _deleted = 0;
     _capacity = ((_size / STEP_OF_CAPACITY) + 1) * STEP_OF_CAPACITY;
@@ -210,6 +210,30 @@ inline T* TVector<T>::data() noexcept {
 }
 
 template <class T>
+inline T& TVector<T>::front() {
+    if (is_empty()) throw std::logic_error
+        ("Error in front method: vector is empty!");
+    return _data[0];
+}
+
+template <class T>
+inline T& TVector<T>::back() {
+    if (is_empty()) throw std::logic_error
+        ("Error in back method: vector is empty!");
+    return _data[_size + _deleted - 1];
+}
+
+template <class T>
+inline T* TVector<T>::begin() noexcept {
+    return _data;
+}
+
+template <class T>
+inline T* TVector<T>::end() noexcept {
+    return _data + _size + _deleted;
+}
+
+template <class T>
 inline const T* TVector<T>::data() const noexcept {
     return _data;
 }
@@ -222,6 +246,35 @@ inline const size_t TVector<T>::size() const noexcept {
 template <class T>
 inline const size_t TVector<T>::capacity() const noexcept {
     return _capacity;
+}
+
+template <class T>
+inline bool TVector<T>::is_empty() const noexcept {
+    return _size == 0;
+}
+
+template <class T>
+inline const T& TVector<T>::front() const {
+    if (is_empty()) throw std::logic_error
+        ("Error in front method: vector is empty!");
+    return _data[0];
+}
+
+template <class T>
+inline const T& TVector<T>::back() const {
+    if (is_empty()) throw std::logic_error
+        ("Error in back method: vector is empty!");
+    return _data[_size + _deleted - 1];
+}
+
+template <class T>
+inline const T* TVector<T>::begin() const noexcept {
+    return _data;
+}
+
+template <class T>
+inline const T* TVector<T>::end() const noexcept {
+    return _data + _size + _deleted;
 }
 
 #endif  // GAMESTORE_TVECTOR_TVECTOR_H_

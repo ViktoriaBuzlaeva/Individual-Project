@@ -45,9 +45,8 @@ template <class T>
 bool check(const T& expected, const T& actual) {
     if (expected == actual) {
         return true;
-    }
-    else {
-        std::cerr << "Expected result is " << expected << 
+    } else {
+        std::cerr << "Expected result is " << expected <<
             ", but actual is " << actual << "." << std::endl;
         return false;
     }
@@ -63,22 +62,22 @@ void print_final_info() {
     set_color(2, 0);
     std::cout << "[==========] ";
     set_color(7, 0);
-    std::cout << count_success + count_failed << " test" << 
+    std::cout << count_success + count_failed << " test" <<
         (count_success + count_failed > 1 ? "s" : "") << " ran." << std::endl;
     set_color(2, 0);
     std::cout << "[  PASSED  ] ";
     set_color(7, 0);
-    std::cout << count_success << " test" << 
+    std::cout << count_success << " test" <<
         (count_success > 1 ? "s" : "") << std::endl;
     if (count_failed > 0) {
         set_color(4, 0);
         std::cout << "[  FAILED  ] ";
         set_color(7, 0);
-        std::cout << count_failed << " test" << 
+        std::cout << count_failed << " test" <<
             (count_failed > 1 ? "s." : ".") << std::endl;
     }
 }
-}; // namespace TestSystem
+};  // namespace TestSystem
 
 bool test_1_create_default_tvector() {
     TVector<int> v;
@@ -184,6 +183,60 @@ bool test_8_create_tvector_with_size_and_value() {
         TestSystem::check((size_t)15, v.capacity());
 }
 
+bool test_9_access_front_elem_tvector() {
+    int value = 4;
+    int mass[4] = { 1, 2, 3, 4 };
+    TVector<int> v({ 1, 2, 3, 4 });
+
+    int first_elem = v.front();
+    v.front() = value;
+
+    return TestSystem::check(mass[0], first_elem) &&
+        TestSystem::check(value, v.front());
+}
+
+bool test_10_access_back_elem_tvector() {
+    int value = 1;
+    int mass[4] = { 1, 2, 3, 4 };
+    TVector<int> v({ 1, 2, 3, 4 });
+
+    int last_elem = v.back();
+    v.back() = value;
+
+    return TestSystem::check(mass[3], last_elem) &&
+        TestSystem::check(value, v.back());
+}
+
+bool test_11_try_access_front_elem_empty_tvector() {
+    bool expected_result = true;
+    bool actual_result = false;
+    TVector<int> v;
+
+    try {
+        int elem = v.front();
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_12_try_access_back_elem_empty_tvector() {
+    bool expected_result = true;
+    bool actual_result = false;
+    TVector<int> v;
+
+    try {
+        int elem = v.back();
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
 int main() {
     Application application_1;
     Date date_1;
@@ -210,6 +263,15 @@ int main() {
         " try_create_tvector_with_copying");
     TestSystem::start_test(test_8_create_tvector_with_size_and_value,
         " create_tvector_with_size_and_value");
+    TestSystem::start_test(test_9_access_front_elem_tvector,
+        " access_front_elem_tvector");
+    TestSystem::start_test(test_10_access_back_elem_tvector,
+        " access_back_elem_tvector");
+    TestSystem::start_test(test_11_try_access_front_elem_empty_tvector,
+        " try_access_front_elem_empty_tvector");
+    TestSystem::start_test(test_12_try_access_back_elem_empty_tvector,
+        " try_access_back_elem_empty_tvector");
+
     TestSystem::print_final_info();
 
     system("pause");
