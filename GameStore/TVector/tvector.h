@@ -3,6 +3,8 @@
 #ifndef GAMESTORE_TVECTOR_TVECTOR_H_
 #define GAMESTORE_TVECTOR_TVECTOR_H_
 
+#include <iostream>
+
 #define STEP_OF_CAPACITY 15
 
 enum State { empty, busy, deleted };
@@ -20,6 +22,7 @@ class TVector {
     TVector(std::initializer_list<T>) noexcept;
     TVector(const TVector<T>&);
     TVector(size_t, const T&) noexcept;
+
     ~TVector();
 
     inline bool is_empty() const noexcept;
@@ -53,8 +56,8 @@ class TVector {
     void clear() noexcept;
 
     void shrink_to_fit() noexcept;
-    void reserve(static_cast<size_t>) noexcept;
-    void resize(static_cast<size_t>) noexcept;
+    void reserve(size_t) noexcept;
+    void resize(size_t) noexcept;
 
     TVector<T>& operator = (const TVector<T>&);
     bool operator == (const TVector<T>&) const;
@@ -85,5 +88,138 @@ class TVector {
     inline size_t get_right_position(size_t) const noexcept;
     inline void swap_positions(size_t, size_t) noexcept;
 };
+
+template <class T>
+TVector<T>::TVector(size_t size) noexcept : _size(size) {
+    _deleted = 0;
+    _capacity = ((_size / STEP_OF_CAPACITY) + 1) * STEP_OF_CAPACITY;
+    _data = new T[_capacity];
+    _states = new State[_capacity];
+
+    size_t i = 0;
+    for (; i < _size; i++) {
+        _states[i] = busy;
+    }
+    for (; i < _capacity; i++) {
+        _states[i] = empty;
+    }
+}
+
+template <class T>
+TVector<T>::TVector(size_t size, const T* data) noexcept : _size(size) {
+    _deleted = 0;
+    _capacity = ((_size / STEP_OF_CAPACITY) + 1) * STEP_OF_CAPACITY;
+    _data = new T[_capacity];
+    _states = new State[_capacity];
+
+    size_t i = 0;
+    for (; i < _size; i++) {
+        _data[i] = data[i];
+        _states[i] = busy;
+    }
+    for (; i < _capacity; i++) {
+        _states[i] = empty;
+    }
+}
+
+template <class T>
+TVector<T>::TVector(size_t size, std::initializer_list<T> data) noexcept : _size(size) {
+    _deleted = 0;
+    _capacity = ((_size / STEP_OF_CAPACITY) + 1) * STEP_OF_CAPACITY;
+    _data = new T[_capacity];
+    _states = new State[_capacity];
+
+    size_t i = 0;
+    auto it = data.begin();
+    for (; i < _size; i++) {
+        _data[i] = *it;
+        _states[i] = busy;
+        it++;
+    }
+    for (; i < _capacity; i++) {
+        _states[i] = empty;
+    }
+}
+
+template <class T>
+TVector<T>::TVector(std::initializer_list<T>data) noexcept {
+    _size = data.size();
+    _deleted = 0;
+    _capacity = ((_size / STEP_OF_CAPACITY) + 1) * STEP_OF_CAPACITY;
+    _data = new T[_capacity];
+    _states = new State[_capacity];
+
+    size_t i = 0;
+    auto it = data.begin();
+    for (; it != data.end(); i++) {
+        _data[i] = *it;
+        _states[i] = busy;
+        it++;
+    }
+    for (; i < _capacity; i++) {
+        _states[i] = empty;
+    }
+}
+
+template <class T>
+TVector<T>::TVector(const TVector<T>& other) {
+    if (&other == NULL) throw std::logic_error("Error in copy constructor: other vector doesn't exist!");
+    _size = other._size;
+    _deleted = other._deleted;
+    _capacity = other._capacity;
+    _data = new T[_capacity];
+    _states = new State[_capacity];
+
+    size_t i = 0;
+    for (; i < _size; i++) {
+        _data[i] = other._data[i];
+    }
+    for (; i < _capacity; i++) {
+        _states[i] = other._states[i];
+    }
+}
+
+template <class T>
+TVector<T>::TVector(size_t size, const T& value) noexcept : _size(size) {
+    _deleted = 0;
+    _capacity = ((_size / STEP_OF_CAPACITY) + 1) * STEP_OF_CAPACITY;
+    _data = new T[_capacity];
+    _states = new State[_capacity];
+
+    size_t i = 0;
+    for (; i < _size; i++) {
+        _data[i] = value;
+        _states[i] = busy;
+    }
+    for (; i < _capacity; i++) {
+        _states[i] = empty;
+    }
+}
+
+template <class T>
+TVector<T>::~TVector() {
+    delete[] _data;
+    delete[] _states;
+}
+
+template <class T>
+inline T* TVector<T>::data() noexcept {
+    return _data;
+}
+
+template <class T>
+inline const T* TVector<T>::data() const noexcept {
+    return _data;
+}
+
+template <class T>
+inline const size_t TVector<T>::size() const noexcept {
+    return _size;
+}
+
+template <class T>
+inline const size_t TVector<T>::capacity() const noexcept {
+    return _capacity;
+}
 
 #endif  // GAMESTORE_TVECTOR_TVECTOR_H_
