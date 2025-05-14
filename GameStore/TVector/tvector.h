@@ -50,6 +50,7 @@ class TVector {
     void pop_front();
     void pop_back();
     void erase(size_t);
+    void erase(size_t, size_t);
 
     void replace(size_t, const T&);
 
@@ -294,8 +295,14 @@ template <class T>
 void TVector<T>::insert(size_t pos, const T& value) {
     if (pos > _size + _deleted) throw std::logic_error
         ("Error in insert method: position out of range!");
-    if (pos == 0) { push_front(value); return; }
-    if (pos == _size + _deleted) { push_back(value); return; }
+    if (pos == 0) { 
+        push_front(value); 
+        return; 
+    }
+    if (pos == _size + _deleted) { 
+        push_back(value); 
+        return; 
+    }
     _size++;
     if (is_full()) reset_memory();
     pos = get_right_position(pos);
@@ -341,6 +348,59 @@ void TVector<T>::insert(size_t pos, std::initializer_list<T> data) {
         _states[i] = busy;
         it++;
     }
+}
+
+template <class T>
+void TVector<T>::pop_front() {
+    if (is_empty()) throw std::logic_error
+        ("Error in pop front method: vector is empty!");
+    _size--;
+    _deleted++;
+    _states[0] = deleted;
+    reset_memory_for_delete();
+}
+
+template <class T>
+void TVector<T>::pop_back() {
+    if (is_empty()) throw std::logic_error
+        ("Error in pop back method: vector is empty!");
+    _size--;
+    _states[_size + _deleted] = empty;
+}
+
+template <class T>
+void TVector<T>::erase(size_t pos) {
+    if (is_empty()) throw std::logic_error
+        ("Error in pop back method: vector is empty!");
+    if (pos > _size + _deleted) throw std::logic_error
+        ("Error in erase method: position out of range!");
+    if (pos == _size + _deleted - 1) pop_back();
+    else {
+        _size--;
+        pos = get_right_position(pos);
+        _deleted++;
+        _states[pos] = deleted;
+    }
+    reset_memory_for_delete();
+}
+
+template <class T>
+void TVector<T>::erase(size_t pos, size_t count) {
+    if (is_empty()) throw std::logic_error
+        ("Error in pop back method: vector is empty!");
+    if (pos + count >= _size + _deleted) throw std::logic_error
+        ("Error in erase method: position out of range!");
+    if (pos == _size + _deleted - 1 && count == 1) pop_back();
+    else {
+        _size -= count;
+        pos = get_right_position(pos);
+        _deleted += count;
+        for (size_t i = pos, j = 0; j < count; i++, j++) {
+            while (_states[i] == deleted) i++;
+            _states[i] = deleted;
+        }
+    }
+    reset_memory_for_delete();
 }
 
 template <class T>
@@ -391,6 +451,14 @@ inline const T& TVector<T>::at(size_t pos) const {
         ("Error in at method: position out of range!");
     pos = get_right_position(pos);
     return _data[pos];
+}
+
+template <class T>
+void TVector<T>::clear() noexcept {
+    set_memory(0);
+    for (size_t i = 0; i < _capacity; i++) {
+        _states[i] = empty;
+    }
 }
 
 template <class T>
@@ -540,6 +608,36 @@ void TVector<T>::reset_memory() noexcept {
 
     _data = new_data;
     _states = new_states;
+}
+
+template <class T>
+void TVector<T>::reset_memory_for_delete() noexcept {
+    if (_size == 0) clear();
+    else if (_deleted >= 0.15 * _size) {
+        _deleted = 0;
+        _capacity = (_size / STEP_OF_CAPACITY + 1) * STEP_OF_CAPACITY;
+
+        T* new_data = new T[_capacity];
+        State* new_states = new State[_capacity];
+
+        size_t j = 0;
+        for (size_t i = 0; j < _size + _deleted; i++) {
+            if (_states[i] == busy) {
+                new_data[j] = _data[i];
+                new_states[j] = busy;
+                j++;
+            }
+        }
+        for (; j < _capacity; j++) {
+            new_states[j] = empty;
+        }
+
+        delete[] _data;
+        delete[] _states;
+
+        _data = new_data;
+        _states = new_states;
+    }
 }
 
 template <class T>

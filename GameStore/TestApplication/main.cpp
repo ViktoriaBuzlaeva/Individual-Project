@@ -561,12 +561,143 @@ bool test_36_insert_with_reset_memory() {
 }
 
 bool test_37_try_insert_out_of_range() {
-    bool expected_result = false;
-    bool actual_result = true;
+    bool expected_result = true;
+    bool actual_result = false;
     TVector<int> v({ 1, 2, 3, 4, 5 });
 
     try {
         v.insert(7, 6);
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_38_clear_tvector() {
+    TVector<int> v({ 1, 2, 3, 4, 5 });
+
+    v.clear();
+
+    return TestSystem::check((size_t)0, v.size()) &&
+        TestSystem::check((size_t)15, v.capacity());
+}
+
+bool test_39_pop_front_tvector() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1({ 1, 2, 3, 4, 5 });
+    v1.pop_front();
+
+    TVector<int> v2({ 2, 3, 4, 5 });
+
+    actual_result &= (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result) &&
+        TestSystem::check(v2.size(), v1.size()) &&
+        TestSystem::check(v2.capacity(), v1.capacity());
+}
+
+bool test_40_pop_front_without_reset_memory_for_delete() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1(14, 2);
+    v1.push_back(14);
+    v1.pop_front();
+
+    TVector<int> v2({ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 14 });
+
+    actual_result &= (v1 == v2);
+    actual_result &= (*(v1.data() + 13) != *(v2.data() + 13));
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_41_try_pop_front_empty_tvector() {
+    bool expected_result = true;
+    bool actual_result = false;
+    TVector<int> v;
+
+    try {
+        v.pop_front();
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_42_pop_back_tvector() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1({ 1, 2, 3, 4, 5 });
+    v1.pop_back();
+
+    TVector<int> v2({ 1, 2, 3, 4 });
+
+    actual_result &= (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result) &&
+        TestSystem::check(v2.size(), v1.size()) &&
+        TestSystem::check(v2.capacity(), v1.capacity());
+}
+
+bool test_43_try_pop_back_empty_tvector() {
+    bool expected_result = true;
+    bool actual_result = false;
+    TVector<int> v;
+
+    try {
+        v.pop_back();
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_44_erase_tvector() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1({ 1, 2, 3, 4, 5 });
+    
+    TVector<int> v2({ 1, 2, 3, 5 });
+    TVector<int> v3({ 1, 5 });
+
+    v1.erase(3);
+    actual_result &= (v1 == v2);
+    v1.erase(1, 2);
+    actual_result &= (v1 == v3);
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_45_erase_without_reset_memory_for_delete() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1(14, 2);
+    v1.insert(3, 4);
+    v1.erase(3);
+    v1.insert(4, 5);
+
+    TVector<int> v2({ 2, 2, 2, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 });
+
+    actual_result &= (v1 == v2);
+    actual_result &= (*(v1.data() + 3) != *(v2.data() + 3));
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_46_try_erase_empty_tvector() {
+    bool expected_result = false;
+    bool actual_result = true;
+    TVector<int> v;
+
+    try {
+        v.erase(0);
     }
     catch (const std::exception& ex) {
         actual_result = false;
@@ -656,6 +787,20 @@ int main() {
         " insert_with_reset_memory");
     TestSystem::start_test(test_37_try_insert_out_of_range,
         " try_insert_out_of_range");
+    TestSystem::start_test(test_38_clear_tvector, " clear_tvector");
+    TestSystem::start_test(test_39_pop_front_tvector, " pop_front_tvector");
+    TestSystem::start_test(test_40_pop_front_without_reset_memory_for_delete,
+        " pop_front_without_reset_memory_for_delete");
+    TestSystem::start_test(test_41_try_pop_front_empty_tvector,
+        " try_pop_front_empty_tvector");
+    TestSystem::start_test(test_42_pop_back_tvector, " pop_back_tvector");
+    TestSystem::start_test(test_43_try_pop_back_empty_tvector,
+        " try_pop_back_empty_tvector");
+    TestSystem::start_test(test_44_erase_tvector, " erase_tvector");
+    TestSystem::start_test(test_45_erase_without_reset_memory_for_delete,
+        " erase_without_reset_memory_for_delete");
+    TestSystem::start_test(test_46_try_erase_empty_tvector,
+        " try_erase_empty_tvector");
 
     TestSystem::print_final_info();
 
