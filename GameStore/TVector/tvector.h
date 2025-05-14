@@ -23,7 +23,7 @@ class TVector {
     TVector(const TVector<T>&);
     TVector(size_t, const T&) noexcept;
 
-    ~TVector();
+    ~TVector() noexcept;
 
     inline bool is_empty() const noexcept;
 
@@ -53,6 +53,7 @@ class TVector {
 
     void assign(size_t, const T&) noexcept;
     void assign(std::initializer_list<T>) noexcept;
+    inline const T& at(size_t) const;
     inline T& at(size_t);
     void clear() noexcept;
 
@@ -60,11 +61,13 @@ class TVector {
     void reserve(size_t) noexcept;
     void resize(size_t) noexcept;
 
-    TVector<T>& operator = (const TVector<T>&);
+    TVector<T>& operator = (const TVector<T>&) noexcept;
 
-    bool operator == (const TVector<T>&) const;
-    bool operator != (const TVector<T>&) const;
-    inline const T& operator[] (size_t) const;
+    bool operator == (const TVector<T>&) const noexcept;
+    bool operator != (const TVector<T>&) const noexcept;
+
+    inline const T& operator[] (size_t) const noexcept;
+    inline T& operator[] (size_t) noexcept;
 
     template <class T>
     friend void shuffle(TVector<T>&) noexcept;
@@ -202,7 +205,7 @@ TVector<T>::TVector(size_t size, const T& value) noexcept : _size(size) {
 }
 
 template <class T>
-TVector<T>::~TVector() {
+TVector<T>::~TVector() noexcept {
     delete[] _data;
     delete[] _states;
 }
@@ -327,7 +330,23 @@ void TVector<T>::assign(std::initializer_list<T> data) noexcept {
 }
 
 template <class T>
-TVector<T>& TVector<T>::operator = (const TVector<T>& other) {
+inline const T& TVector<T>::at(size_t pos) const{
+    if (pos >= _size) throw std::logic_error
+        ("Error in at method: position out of range!");
+    pos = get_right_position(pos);
+    return _data[pos];
+}
+
+template <class T>
+inline T& TVector<T>::at(size_t pos) {
+    if (pos >= _size) throw std::logic_error
+        ("Error in at method: position out of range!");
+    pos = get_right_position(pos);
+    return _data[pos];
+}
+
+template <class T>
+TVector<T>& TVector<T>::operator = (const TVector<T>& other) noexcept {
     if (this != &other) {
         delete[] _data;
         delete[] _states;
@@ -351,7 +370,7 @@ TVector<T>& TVector<T>::operator = (const TVector<T>& other) {
 }
 
 template <class T>
-bool TVector<T>::operator == (const TVector<T>& other) const {
+bool TVector<T>::operator == (const TVector<T>& other) const noexcept {
     if (_size != other._size) return false;
     for (size_t i = 0, j = 0; i < _size + _deleted; i++, j++) {
         while (_states[i] != busy) i++;
@@ -362,8 +381,20 @@ bool TVector<T>::operator == (const TVector<T>& other) const {
 }
 
 template <class T>
-bool TVector<T>::operator != (const TVector<T>& other) const {
+bool TVector<T>::operator != (const TVector<T>& other) const noexcept {
     return !(*this == other);
+}
+
+template <class T>
+inline const T& TVector<T>::operator[] (size_t pos) const noexcept {
+    get_right_position(pos);
+    return _data[pos];
+}
+
+template <class T>
+inline T& TVector<T>::operator[] (size_t pos) noexcept {
+    get_right_position(pos);
+    return _data[pos];
 }
 
 template <class T>
@@ -371,5 +402,16 @@ inline bool TVector<T>::is_full() const noexcept {
     return _size + _deleted >= _capacity;
 }
 
+template <class T>
+size_t TVector<T>::get_right_position(size_t pos) const noexcept {
+    if (_deleted == 0) return pos;
+    size_t count_busy = 0;
+    for (size_t i = 0; i != pos; i++) {
+        if (_states[i] == busy) {
+            if (pos == count_busy) return i;
+            count_busy++;
+        }
+    }
+}
 
 #endif  // GAMESTORE_TVECTOR_TVECTOR_H_

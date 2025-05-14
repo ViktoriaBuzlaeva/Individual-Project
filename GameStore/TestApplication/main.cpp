@@ -343,6 +343,43 @@ bool test_20_operator_assign_other_tvector() {
         TestSystem::check(v2.capacity(), v1.capacity());
 }
 
+bool test_21_access_elem_at_pos_tvector() {
+    int value = 1;
+    int mass[4] = { 1, 2, 3, 4 };
+    TVector<int> v({ 1, 2, 3, 4 });
+
+    v.at(3) = value;
+
+    return TestSystem::check(mass[2], v.at(2)) &&
+        TestSystem::check(value, v.at(3));
+}
+
+bool test_22_try_access_elem_at_out_of_range_pos_tvector() {
+    bool expected_result = true;
+    bool actual_result = false;
+    TVector<int> v(6);
+
+    try {
+        int elem = v.at(6);
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_23_operator_brackets_tvector() {
+    int value = 1;
+    int mass[4] = { 1, 2, 3, 4 };
+    TVector<int> v({ 1, 2, 3, 4 });
+
+    v[3] = value;
+
+    return TestSystem::check(mass[2], v[2]) &&
+        TestSystem::check(value, v[3]);
+}
+
 int main() {
     Application application_1;
     Date date_1;
@@ -393,6 +430,12 @@ int main() {
         " assign_tvector_with_reset_memory");
     TestSystem::start_test(test_20_operator_assign_other_tvector,
         " operator_assign_other_tvector");
+    TestSystem::start_test(test_21_access_elem_at_pos_tvector,
+        " access_elem_at_pos_tvector");
+    TestSystem::start_test(test_22_try_access_elem_at_out_of_range_pos_tvector,
+        " try_access_elem_at_out_of_range_pos_tvector");
+    TestSystem::start_test(test_23_operator_brackets_tvector,
+        " operator_brackets_tvector");
 
     TestSystem::print_final_info();
 
