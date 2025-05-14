@@ -123,7 +123,8 @@ TVector<T>::TVector(size_t size, const T* data) noexcept : _size(size) {
 }
 
 template <class T>
-TVector<T>::TVector(size_t size, std::initializer_list<T> data) noexcept : _size(size) {
+TVector<T>::TVector(size_t size, std::initializer_list<T> data) noexcept : 
+    _size(size) {
     _deleted = 0;
     _capacity = ((_size / STEP_OF_CAPACITY) + 1) * STEP_OF_CAPACITY;
     _data = new T[_capacity];
@@ -163,7 +164,8 @@ TVector<T>::TVector(std::initializer_list<T>data) noexcept {
 
 template <class T>
 TVector<T>::TVector(const TVector<T>& other) {
-    if (&other == NULL) throw std::logic_error("Error in copy constructor: other vector doesn't exist!");
+    if (&other == NULL) throw std::logic_error
+        ("Error in copy constructor: other vector doesn't exist!");
     _size = other._size;
     _deleted = other._deleted;
     _capacity = other._capacity;
