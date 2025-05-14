@@ -663,7 +663,7 @@ bool test_44_erase_tvector() {
     bool expected_result = true;
     bool actual_result = true;
     TVector<int> v1({ 1, 2, 3, 4, 5 });
-    
+
     TVector<int> v2({ 1, 2, 3, 5 });
     TVector<int> v3({ 1, 5 });
 
