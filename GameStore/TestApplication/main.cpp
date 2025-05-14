@@ -237,6 +237,112 @@ bool test_12_try_access_back_elem_empty_tvector() {
     return TestSystem::check(expected_result, actual_result);
 }
 
+bool test_13_operator_equality_with_equal_tvectors() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1({ 1, 2, 3, 4 });
+    TVector<int> v2({ 1, 2, 3, 4 });
+
+    actual_result = (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_14_operator_equality_with_not_equal_tvectors() {
+    bool expected_result = false;
+    bool actual_result = true;
+    TVector<int> v1({ 1, 2, 3, 4 });
+    TVector<int> v2({ 1, 2, 3 });
+
+    actual_result = (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_15_operator_inequality_with_equal_tvectors() {
+    bool expected_result = false;
+    bool actual_result = true;
+    TVector<int> v1({ 1, 2, 3, 4 });
+    TVector<int> v2({ 1, 2, 3, 4 });
+
+    actual_result = (v1 != v2);
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_16_operator_inequality_with_not_equal_tvectors() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1({ 1, 2, 3, 4 });
+    TVector<int> v2({ 1, 2, 3 });
+
+    actual_result = (v1 != v2);
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_17_assign_with_size_and_value_tvector() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1(16, 2);
+    v1.assign(5, 1);
+
+    TVector<int> v2({ 1, 1, 1, 1, 1 });
+
+    actual_result &= (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result) &&
+        TestSystem::check(v2.size(), v1.size());
+}
+
+bool test_18_assign_with_array_tvector() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1;
+    v1.assign({1, 1, 1, 1, 1});
+
+    TVector<int> v2({ 1, 1, 1, 1, 1 });
+
+    actual_result &= (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result) &&
+        TestSystem::check(v2.size(), v1.size());
+}
+
+bool test_19_assign_tvector_with_reset_memory() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1;
+    TVector<int> v3(31, 2);
+    v1.assign(16, 1);
+    v3.assign(16, 1);
+
+    TVector<int> v2(16, 1);
+
+    actual_result &= (v1 == v2);
+    actual_result &= (v3 == v2);
+    actual_result &= (v2.capacity() != v3.capacity());
+
+    return TestSystem::check(expected_result, actual_result) &&
+        TestSystem::check(v2.size(), v1.size()) &&
+        TestSystem::check(v2.capacity(), v1.capacity()) &&
+        TestSystem::check(v2.size(), v3.size());
+}
+
+bool test_20_operator_assign_other_tvector() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1({ 1, 2, 3, 4 });
+    TVector<int> v2({ 1, 2 });
+    v1 = v2;
+
+    actual_result &= (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result) &&
+        TestSystem::check(v2.size(), v1.size()) &&
+        TestSystem::check(v2.capacity(), v1.capacity());
+}
+
 int main() {
     Application application_1;
     Date date_1;
@@ -271,6 +377,22 @@ int main() {
         " try_access_front_elem_empty_tvector");
     TestSystem::start_test(test_12_try_access_back_elem_empty_tvector,
         " try_access_back_elem_empty_tvector");
+    TestSystem::start_test(test_13_operator_equality_with_equal_tvectors,
+        " operator_equality_with_equal_tvectors");
+    TestSystem::start_test(test_14_operator_equality_with_not_equal_tvectors,
+        " operator_equality_with_not_equal_tvectors");
+    TestSystem::start_test(test_15_operator_inequality_with_equal_tvectors,
+        " operator_inequality_with_equal_tvectors");
+    TestSystem::start_test(test_16_operator_inequality_with_not_equal_tvectors,
+        " operator_inequality_with_not_equal_tvectors");
+    TestSystem::start_test(test_17_assign_with_size_and_value_tvector,
+        " assign_with_size_and_value_tvector");
+    TestSystem::start_test(test_18_assign_with_array_tvector,
+        " assign_with_array_tvector");
+    TestSystem::start_test(test_19_assign_tvector_with_reset_memory,
+        " assign_tvector_with_reset_memory");
+    TestSystem::start_test(test_20_operator_assign_other_tvector,
+        " operator_assign_other_tvector");
 
     TestSystem::print_final_info();
 

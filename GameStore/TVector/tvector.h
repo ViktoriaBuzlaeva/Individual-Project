@@ -51,7 +51,8 @@ class TVector {
 
     void replace(size_t, const T&);
 
-    void assign(size_t, const T&);
+    void assign(size_t, const T&) noexcept;
+    void assign(std::initializer_list<T>) noexcept;
     inline T& at(size_t);
     void clear() noexcept;
 
@@ -60,6 +61,7 @@ class TVector {
     void resize(size_t) noexcept;
 
     TVector<T>& operator = (const TVector<T>&);
+
     bool operator == (const TVector<T>&) const;
     bool operator != (const TVector<T>&) const;
     inline const T& operator[] (size_t) const;
@@ -173,8 +175,9 @@ TVector<T>::TVector(const TVector<T>& other) {
     _states = new State[_capacity];
 
     size_t i = 0;
-    for (; i < _size; i++) {
+    for (; i < _size + _deleted; i++) {
         _data[i] = other._data[i];
+        _states[i] = other._states[i];
     }
     for (; i < _capacity; i++) {
         _states[i] = other._states[i];
@@ -276,5 +279,97 @@ template <class T>
 inline const T* TVector<T>::end() const noexcept {
     return _data + _size + _deleted;
 }
+
+template <class T>
+void TVector<T>::assign(size_t size, const T& value) noexcept {
+    _deleted = 0;
+    _size = size;
+    if (is_full()) {
+        _capacity = ((_size / STEP_OF_CAPACITY) + 1) * STEP_OF_CAPACITY;
+        _data = new T[_capacity];
+        _states = new State[_capacity];
+        for (size_t i = _size; i < _capacity; i++) {
+            _states[i] = empty;
+        }
+    }
+    size_t i = 0;
+    for (; i < _size; i++) {
+        _data[i] = value;
+        _states[i] = busy;
+    }
+    for (; i < _capacity; i++) {
+        _states[i] = empty;
+    }
+}
+
+template <class T>
+void TVector<T>::assign(std::initializer_list<T> data) noexcept {
+    _deleted = 0;
+    _size = data.size();
+    if (is_full()) {
+        _capacity = ((_size / STEP_OF_CAPACITY) + 1) * STEP_OF_CAPACITY;
+        _data = new T[_capacity];
+        _states = new State[_capacity];
+        for (size_t i = _size; i < _capacity; i++) {
+            _states[i] = empty;
+        }
+    }
+    auto it = data.begin();
+    size_t i = 0;
+    for (; i < _size; i++) {
+        _data[i] = *it;
+        _states[i] = busy;
+        it++;
+    }
+    for (; i < _capacity; i++) {
+        _states[i] = empty;
+    }
+}
+
+template <class T>
+TVector<T>& TVector<T>::operator = (const TVector<T>& other) {
+    if (this != &other) {
+        delete[] _data;
+        delete[] _states;
+
+        _deleted = other._deleted;
+        _size = other._size;
+        _capacity = other._capacity;
+        _data = new T[_capacity];
+        _states = new State[_capacity];
+
+        size_t i = 0;
+        for (; i < _size + _deleted; i++) {
+            _data[i] = other._data[i];
+            _states[i] = other._states[i];
+        }
+        for (; i < _capacity; i++) {
+            _states[i] = empty;
+        }
+    }
+    return *this;
+}
+
+template <class T>
+bool TVector<T>::operator == (const TVector<T>& other) const {
+    if (_size != other._size) return false;
+    for (size_t i = 0, j = 0; i < _size + _deleted; i++, j++) {
+        while (_states[i] != busy) i++;
+        while (other._states[j] != busy) j++;
+        if (_data[i] != other._data[j]) return false;
+    }
+    return true;
+}
+
+template <class T>
+bool TVector<T>::operator != (const TVector<T>& other) const {
+    return !(*this == other);
+}
+
+template <class T>
+inline bool TVector<T>::is_full() const noexcept {
+    return _size + _deleted >= _capacity;
+}
+
 
 #endif  // GAMESTORE_TVECTOR_TVECTOR_H_
