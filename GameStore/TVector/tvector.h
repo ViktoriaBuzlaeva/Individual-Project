@@ -376,8 +376,7 @@ void TVector<T>::erase(size_t pos) {
         ("Error in erase method: position out of range!");
     if (pos == _size + _deleted - 1) {
         pop_back();
-    }
-    else {
+    } else {
         _size--;
         pos = get_right_position(pos);
         _deleted++;
@@ -394,8 +393,7 @@ void TVector<T>::erase(size_t pos, size_t count) {
         ("Error in erase method: position out of range!");
     if (pos == _size + _deleted - 1 && count == 1) {
         pop_back();
-    }
-    else {
+    } else {
         _size -= count;
         pos = get_right_position(pos);
         _deleted += count;
@@ -618,8 +616,7 @@ template <class T>
 void TVector<T>::reset_memory_for_delete() noexcept {
     if (_size == 0) {
         clear();
-    }
-    else if (_deleted >= 0.15 * _size) {
+    } else if (_deleted >= 0.15 * _size) {
         _deleted = 0;
         _capacity = (_size / STEP_OF_CAPACITY + 1) * STEP_OF_CAPACITY;
 
