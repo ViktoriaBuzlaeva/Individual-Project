@@ -44,6 +44,8 @@ class TVector {
     void push_front(const T&) noexcept;
     void push_back(const T&) noexcept;
     void insert(size_t, const T&);
+    void insert(size_t, size_t, const T&);
+    void insert(size_t, std::initializer_list<T>);
 
     void pop_front();
     void pop_back();
@@ -266,6 +268,79 @@ inline const T* TVector<T>::begin() const noexcept {
 template <class T>
 inline const T* TVector<T>::end() const noexcept {
     return _data + _size + _deleted;
+}
+
+template <class T>
+void TVector<T>::push_front(const T& value) noexcept {
+    _size++;
+    if (is_full()) reset_memory();
+    for (size_t i = _size + _deleted - 1; i > 0; i--) {
+        _data[i] = _data[i - 1];
+        _states[i] = _states[i - 1];
+    }
+    _data[0] = value;
+    _states[0] = busy;
+}
+
+template <class T>
+void TVector<T>::push_back(const T& value) noexcept {
+    _size++;
+    if (is_full()) reset_memory();
+    _data[_size + _deleted - 1] = value;
+    _states[_size + _deleted - 1] = busy;
+}
+
+template <class T>
+void TVector<T>::insert(size_t pos, const T& value) {
+    if (pos > _size + _deleted) throw std::logic_error
+        ("Error in insert method: position out of range!");
+    if (pos == 0) { push_front(value); return; }
+    if (pos == _size + _deleted) { push_back(value); return; }
+    _size++;
+    if (is_full()) reset_memory();
+    pos = get_right_position(pos);
+    for (size_t i = _size + _deleted - 1; i > pos; i--) {
+        _data[i] = _data[i - 1];
+        _states[i] = _states[i - 1];
+    }
+    _data[pos] = value;
+    _states[pos] = busy;
+}
+
+template <class T>
+void TVector<T>::insert(size_t pos, size_t count, const T& value) {
+    if (pos > _size + _deleted) throw std::logic_error
+        ("Error in insert method: position out of range!");
+    _size += count;
+    if (is_full()) reset_memory();
+    pos = get_right_position(pos);
+    for (size_t i = _size + _deleted; i > pos + count; i--) {
+        _data[i] = _data[i - 1 - count];
+        _states[i] = _states[i - 1 - count];
+    }
+    for (size_t i = pos, j = 0; j < count; i++, j++) {
+        _data[i] = value;
+        _states[i] = busy;
+    }
+}
+
+template <class T>
+void TVector<T>::insert(size_t pos, std::initializer_list<T> data) {
+    if (pos > _size + _deleted) throw std::logic_error
+        ("Error in insert method: position out of range!");
+    _size += data.size();
+    if (is_full()) reset_memory();
+    pos = get_right_position(pos);
+    for (size_t i = _size + _deleted; i > pos + data.size(); i--) {
+        _data[i] = _data[i - 1 - data.size()];
+        _states[i] = _states[i - 1 - data.size()];
+    }
+    auto it = data.begin();
+    for (size_t i = pos, j = 0; j < data.size(); i++, j++) {
+        _data[i] = *it;
+        _states[i] = busy;
+        it++;
+    }
 }
 
 template <class T>

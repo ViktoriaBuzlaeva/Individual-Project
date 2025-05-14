@@ -454,13 +454,125 @@ bool test_30_resize_with_new_value() {
     TVector<int> v1(10, 2);
     v1.resize(16, 4);
 
-    TVector<int> v2({ 2, 2, 2, 2 ,2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4 });
+    TVector<int> v2({ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4 });
 
     actual_result &= (v1 == v2);
 
     return TestSystem::check(expected_result, actual_result) &&
         TestSystem::check(v2.size(), v1.size()) &&
         TestSystem::check(v2.capacity(), v1.capacity());
+}
+
+bool test_31_push_front_tvector() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1({ 2, 3, 4, 5 });
+    v1.push_front(1);
+
+    TVector<int> v2({ 1, 2, 3, 4, 5 });
+
+    actual_result &= (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result) &&
+        TestSystem::check(v2.size(), v1.size()) &&
+        TestSystem::check(v2.capacity(), v1.capacity());
+}
+
+bool test_32_push_front_with_reset_memory() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1(14, 2);
+    v1.push_front(1);
+    v1.push_front(3);
+
+    TVector<int> v2({ 3, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 });
+
+    actual_result &= (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result) &&
+        TestSystem::check(v2.size(), v1.size()) &&
+        TestSystem::check(v2.capacity(), v1.capacity());
+}
+
+bool test_33_push_back_tvector() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1({ 1, 2, 3, 4 });
+    v1.push_back(5);
+
+    TVector<int> v2({ 1, 2, 3, 4, 5 });
+
+    actual_result &= (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result) &&
+        TestSystem::check(v2.size(), v1.size()) &&
+        TestSystem::check(v2.capacity(), v1.capacity());
+}
+
+bool test_34_push_front_with_reset_memory() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1(14, 2);
+    v1.push_back(1);
+    v1.push_back(3);
+
+    TVector<int> v2({ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 3 });
+
+    actual_result &= (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result) &&
+        TestSystem::check(v2.size(), v1.size()) &&
+        TestSystem::check(v2.capacity(), v1.capacity());
+}
+
+bool test_35_insert_tvector() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1({ 1, 2, 4, 5 });
+
+    TVector<int> v2({ 1, 2, 3, 4, 5 });
+    TVector<int> v3({ 1, 2, 3, 4, 5, 6, 6, 6 });
+    TVector<int> v4({ 1, 2, 3, 4, 5, 6, 6, 8, 9, 10, 6});
+
+    v1.insert(2, 3);
+    actual_result &= (v1 == v2);
+    v1.insert(5, 3, 6);
+    actual_result &= (v1 == v3);
+    v1.insert(7, { 8, 9, 10});
+    actual_result &= (v1 == v4);
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_36_insert_with_reset_memory() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1(14, 2);
+    v1.insert(2, 111);
+    v1.insert(9, 333);
+
+    TVector<int> v2({ 2, 2, 111, 2, 2, 2, 2, 2, 2, 333, 2, 2, 2, 2, 2, 2 });
+
+    actual_result &= (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result) &&
+        TestSystem::check(v2.size(), v1.size()) &&
+        TestSystem::check(v2.capacity(), v1.capacity());
+}
+
+bool test_37_try_insert_out_of_range() {
+    bool expected_result = false;
+    bool actual_result = true;
+    TVector<int> v({ 1, 2, 3, 4, 5 });
+
+    try {
+        v.insert(7, 6);
+    }
+    catch (const std::exception& ex) {
+        actual_result = false;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
 }
 
 int main() {
@@ -533,6 +645,17 @@ int main() {
         " resize_with_greater_size_and_cap");
     TestSystem::start_test(test_30_resize_with_new_value,
         " resize_with_new_value");
+    TestSystem::start_test(test_31_push_front_tvector, " push_front_tvector");
+    TestSystem::start_test(test_32_push_front_with_reset_memory,
+        " push_front_with_reset_memory");
+    TestSystem::start_test(test_33_push_back_tvector, " push_back_tvector");
+    TestSystem::start_test(test_34_push_front_with_reset_memory,
+        " push_front_with_reset_memory");
+    TestSystem::start_test(test_35_insert_tvector, " insert_tvector");
+    TestSystem::start_test(test_36_insert_with_reset_memory,
+        " insert_with_reset_memory");
+    TestSystem::start_test(test_37_try_insert_out_of_range,
+        " try_insert_out_of_range");
 
     TestSystem::print_final_info();
 
