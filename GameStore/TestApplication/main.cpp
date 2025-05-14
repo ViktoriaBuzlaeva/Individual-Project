@@ -380,6 +380,72 @@ bool test_23_operator_brackets_tvector() {
         TestSystem::check(value, v[3]);
 }
 
+bool test_24_reserve_with_less_cap() {
+    TVector<int> v(16, 2);
+    v.reserve(17);
+
+    return TestSystem::check((size_t)16, v.size()) &&
+        TestSystem::check((size_t)30, v.capacity());
+}
+
+bool test_25_reserve_with_greater_cap() {
+    TVector<int> v(14, 2);
+    v.reserve(17);
+
+    return TestSystem::check((size_t)14, v.size()) &&
+        TestSystem::check((size_t)17, v.capacity());
+}
+
+bool test_26_resize_tvector_with_less_size() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1(14, 2);
+    v1.resize(10);
+
+    TVector<int> v2(10, 2);
+
+    actual_result &= (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result) &&
+        TestSystem::check(v2.size(), v1.size()) &&
+        TestSystem::check(v2.capacity(), v1.capacity());
+}
+
+bool test_27_resize_with_less_size_and_cap() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1(16, 2);
+    v1.resize(10);
+
+    TVector<int> v2(10, 2);
+
+    actual_result &= (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result) &&
+        TestSystem::check(v2.size(), v1.size()) &&
+        TestSystem::check(v2.capacity(), v1.capacity());
+}
+
+bool test_28_resize_tvector_with_greater_size() {
+    TVector<int> v1(10, 2);
+    v1.resize(13);
+
+    TVector<int> v2(13);
+
+    return TestSystem::check(v2.size(), v1.size()) &&
+        TestSystem::check(v2.capacity(), v1.capacity());
+}
+
+bool test_29_resize_with_greater_size_and_cap() {
+    TVector<int> v1(10, 2);
+    v1.resize(16);
+
+    TVector<int> v2(16, 2);
+
+    return TestSystem::check(v2.size(), v1.size()) &&
+        TestSystem::check(v2.capacity(), v1.capacity());
+}
+
 int main() {
     Application application_1;
     Date date_1;
@@ -436,6 +502,18 @@ int main() {
         " try_access_elem_at_out_of_range_pos_tvector");
     TestSystem::start_test(test_23_operator_brackets_tvector,
         " operator_brackets_tvector");
+    TestSystem::start_test(test_24_reserve_with_less_cap,
+        " reserve_with_less_cap");
+    TestSystem::start_test(test_25_reserve_with_greater_cap,
+        " reserve_with_greater_cap");
+    TestSystem::start_test(test_26_resize_tvector_with_less_size,
+        " resize_tvector_with_less_size");
+    TestSystem::start_test(test_27_resize_with_less_size_and_cap,
+        " resize_with_less_size_and_cap");
+    TestSystem::start_test(test_28_resize_tvector_with_greater_size,
+        " resize_tvector_with_greater_size");
+    TestSystem::start_test(test_29_resize_with_greater_size_and_cap,
+        " resize_with_greater_size_and_cap");
 
     TestSystem::print_final_info();
 

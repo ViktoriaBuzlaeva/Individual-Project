@@ -57,8 +57,8 @@ class TVector {
     inline T& at(size_t);
     void clear() noexcept;
 
-    void shrink_to_fit() noexcept;
     void reserve(size_t) noexcept;
+    void shrink_to_fit() noexcept;
     void resize(size_t) noexcept;
 
     TVector<T>& operator = (const TVector<T>&) noexcept;
@@ -330,7 +330,7 @@ void TVector<T>::assign(std::initializer_list<T> data) noexcept {
 }
 
 template <class T>
-inline const T& TVector<T>::at(size_t pos) const{
+inline const T& TVector<T>::at(size_t pos) const {
     if (pos >= _size) throw std::logic_error
         ("Error in at method: position out of range!");
     pos = get_right_position(pos);
@@ -343,6 +343,47 @@ inline T& TVector<T>::at(size_t pos) {
         ("Error in at method: position out of range!");
     pos = get_right_position(pos);
     return _data[pos];
+}
+
+template <class T>
+void TVector<T>::reserve(size_t new_capacity) noexcept {
+    if (new_capacity > _capacity) {
+        _capacity = new_capacity;
+
+        T* new_data = new T[_capacity];
+        State* new_states = new State[_capacity];
+
+        size_t i = 0;
+        for (; i < _size + _deleted; i++) {
+            new_data[i] = _data[i];
+            new_states[i] = _states[i];
+        }
+        for (; i < _capacity; i++) {
+            new_states[i] = empty;
+        }
+
+        delete[] _data;
+        delete[] _states;
+
+        _data = new_data;
+        _states = new_states;
+    }
+}
+
+template <class T>
+void TVector<T>::resize(size_t new_size) noexcept {
+    if (new_size != _size) {
+        size_t old_size = _size;
+        _size = new_size;
+
+        reset_memory();
+
+        if (_size > old_size) {
+            for (size_t i = old_size + _deleted; i < _size; i++) {
+                _states[i] = busy;
+            }
+        }
+    }
 }
 
 template <class T>
@@ -395,6 +436,29 @@ template <class T>
 inline T& TVector<T>::operator[] (size_t pos) noexcept {
     get_right_position(pos);
     return _data[pos];
+}
+
+template <class T>
+void TVector<T>::reset_memory() noexcept {
+    _capacity = ((_size + _deleted) / STEP_OF_CAPACITY + 1) * STEP_OF_CAPACITY;
+
+    T* new_data = new T[_capacity];
+    State* new_states = new State[_capacity];
+
+    size_t i = 0;
+    for (; i < _size + _deleted; i++) {
+        new_data[i] = _data[i];
+        new_states[i] = _states[i];
+    }
+    for (; i < _capacity; i++) {
+        new_states[i] = empty;
+    }
+
+    delete[] _data;
+    delete[] _states;
+
+    _data = new_data;
+    _states = new_states;
 }
 
 template <class T>
