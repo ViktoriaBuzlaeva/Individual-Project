@@ -16,14 +16,14 @@ class TVector {
     size_t _size;
 
  public:
-    explicit TVector(size_t size = 0) noexcept;
-    TVector(size_t, const T*) noexcept;
-    TVector(size_t, std::initializer_list<T>) noexcept;
-    TVector(std::initializer_list<T>) noexcept;
+    explicit TVector(size_t size = 0);
+    TVector(size_t, const T*);
+    TVector(size_t, std::initializer_list<T>);
+    TVector(std::initializer_list<T>);
     TVector(const TVector<T>&);
-    TVector(size_t, const T&) noexcept;
+    TVector(size_t, const T&);
 
-    ~TVector() noexcept;
+    ~TVector();
 
     inline bool is_empty() const noexcept;
 
@@ -60,6 +60,7 @@ class TVector {
     void reserve(size_t) noexcept;
     void shrink_to_fit() noexcept;
     void resize(size_t) noexcept;
+    void resize(size_t, const T&) noexcept;
 
     TVector<T>& operator = (const TVector<T>&) noexcept;
 
@@ -87,6 +88,7 @@ class TVector {
     size_t _deleted;
     State* _states;
 
+    void set_memory(size_t) noexcept;
     void reset_memory() noexcept;
     void reset_memory_for_delete() noexcept;
     inline bool is_full() const noexcept;
@@ -95,11 +97,8 @@ class TVector {
 };
 
 template <class T>
-TVector<T>::TVector(size_t size) noexcept : _size(size) {
-    _deleted = 0;
-    _capacity = ((_size / STEP_OF_CAPACITY) + 1) * STEP_OF_CAPACITY;
-    _data = new T[_capacity];
-    _states = new State[_capacity];
+TVector<T>::TVector(size_t size) {
+    set_memory(size);
 
     size_t i = 0;
     for (; i < _size; i++) {
@@ -111,11 +110,8 @@ TVector<T>::TVector(size_t size) noexcept : _size(size) {
 }
 
 template <class T>
-TVector<T>::TVector(size_t size, const T* data) noexcept : _size(size) {
-    _deleted = 0;
-    _capacity = ((_size / STEP_OF_CAPACITY) + 1) * STEP_OF_CAPACITY;
-    _data = new T[_capacity];
-    _states = new State[_capacity];
+TVector<T>::TVector(size_t size, const T* data) {
+    set_memory(size);
 
     size_t i = 0;
     for (; i < _size; i++) {
@@ -128,12 +124,8 @@ TVector<T>::TVector(size_t size, const T* data) noexcept : _size(size) {
 }
 
 template <class T>
-TVector<T>::TVector(size_t size, std::initializer_list<T> data) noexcept :
-    _size(size) {
-    _deleted = 0;
-    _capacity = ((_size / STEP_OF_CAPACITY) + 1) * STEP_OF_CAPACITY;
-    _data = new T[_capacity];
-    _states = new State[_capacity];
+TVector<T>::TVector(size_t size, std::initializer_list<T> data) {
+    set_memory(size);
 
     size_t i = 0;
     auto it = data.begin();
@@ -148,12 +140,8 @@ TVector<T>::TVector(size_t size, std::initializer_list<T> data) noexcept :
 }
 
 template <class T>
-TVector<T>::TVector(std::initializer_list<T>data) noexcept {
-    _size = data.size();
-    _deleted = 0;
-    _capacity = ((_size / STEP_OF_CAPACITY) + 1) * STEP_OF_CAPACITY;
-    _data = new T[_capacity];
-    _states = new State[_capacity];
+TVector<T>::TVector(std::initializer_list<T>data) {
+    set_memory(data.size());
 
     size_t i = 0;
     auto it = data.begin();
@@ -188,11 +176,8 @@ TVector<T>::TVector(const TVector<T>& other) {
 }
 
 template <class T>
-TVector<T>::TVector(size_t size, const T& value) noexcept : _size(size) {
-    _deleted = 0;
-    _capacity = ((_size / STEP_OF_CAPACITY) + 1) * STEP_OF_CAPACITY;
-    _data = new T[_capacity];
-    _states = new State[_capacity];
+TVector<T>::TVector(size_t size, const T& value) {
+    set_memory(size);
 
     size_t i = 0;
     for (; i < _size; i++) {
@@ -205,7 +190,7 @@ TVector<T>::TVector(size_t size, const T& value) noexcept : _size(size) {
 }
 
 template <class T>
-TVector<T>::~TVector() noexcept {
+TVector<T>::~TVector() {
     delete[] _data;
     delete[] _states;
 }
@@ -288,9 +273,7 @@ void TVector<T>::assign(size_t size, const T& value) noexcept {
     _deleted = 0;
     _size = size;
     if (is_full()) {
-        _capacity = ((_size / STEP_OF_CAPACITY) + 1) * STEP_OF_CAPACITY;
-        _data = new T[_capacity];
-        _states = new State[_capacity];
+        set_memory(size);
         for (size_t i = _size; i < _capacity; i++) {
             _states[i] = empty;
         }
@@ -310,9 +293,7 @@ void TVector<T>::assign(std::initializer_list<T> data) noexcept {
     _deleted = 0;
     _size = data.size();
     if (is_full()) {
-        _capacity = ((_size / STEP_OF_CAPACITY) + 1) * STEP_OF_CAPACITY;
-        _data = new T[_capacity];
-        _states = new State[_capacity];
+        set_memory(data.size());
         for (size_t i = _size; i < _capacity; i++) {
             _states[i] = empty;
         }
@@ -387,6 +368,20 @@ void TVector<T>::resize(size_t new_size) noexcept {
 }
 
 template <class T>
+void TVector<T>::resize(size_t new_size, const T& value) noexcept {
+    if (new_size != _size) {
+        size_t old_size = _size;
+        resize(new_size);
+
+        if (_size > old_size) {
+            for (size_t i = old_size + _deleted; i < _size; i++) {
+                _data[i] = value;
+            }
+        }
+    }
+}
+
+template <class T>
 TVector<T>& TVector<T>::operator = (const TVector<T>& other) noexcept {
     if (this != &other) {
         delete[] _data;
@@ -436,6 +431,17 @@ template <class T>
 inline T& TVector<T>::operator[] (size_t pos) noexcept {
     get_right_position(pos);
     return _data[pos];
+}
+
+template <class T>
+void TVector<T>::set_memory(size_t size) noexcept {
+    delete[] _data;
+    delete[] _states;
+    _deleted = 0;
+    if (_size != size) _size = size;
+    _capacity = ((_size + _deleted) / STEP_OF_CAPACITY + 1) * STEP_OF_CAPACITY;
+    _data = new T[_capacity];
+    _states = new State[_capacity];
 }
 
 template <class T>

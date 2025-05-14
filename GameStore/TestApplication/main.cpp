@@ -346,12 +346,13 @@ bool test_20_operator_assign_other_tvector() {
 bool test_21_access_elem_at_pos_tvector() {
     int value = 1;
     int mass[4] = { 1, 2, 3, 4 };
-    TVector<int> v({ 1, 2, 3, 4 });
+    const TVector<int> v1({ 1, 2, 3, 4 });
+    TVector<int> v2({ 1, 2, 3, 4 });
 
-    v.at(3) = value;
+    v2.at(3) = value;
 
-    return TestSystem::check(mass[2], v.at(2)) &&
-        TestSystem::check(value, v.at(3));
+    return TestSystem::check(mass[2], v1.at(2)) &&
+        TestSystem::check(value, v2.at(3));
 }
 
 bool test_22_try_access_elem_at_out_of_range_pos_tvector() {
@@ -372,12 +373,13 @@ bool test_22_try_access_elem_at_out_of_range_pos_tvector() {
 bool test_23_operator_brackets_tvector() {
     int value = 1;
     int mass[4] = { 1, 2, 3, 4 };
-    TVector<int> v({ 1, 2, 3, 4 });
+    const TVector<int> v1({ 1, 2, 3, 4 });
+    TVector<int> v2({ 1, 2, 3, 4 });
 
-    v[3] = value;
+    v2[3] = value;
 
-    return TestSystem::check(mass[2], v[2]) &&
-        TestSystem::check(value, v[3]);
+    return TestSystem::check(mass[2], v1[2]) &&
+        TestSystem::check(value, v2[3]);
 }
 
 bool test_24_reserve_with_less_cap() {
@@ -443,6 +445,21 @@ bool test_29_resize_with_greater_size_and_cap() {
     TVector<int> v2(16, 2);
 
     return TestSystem::check(v2.size(), v1.size()) &&
+        TestSystem::check(v2.capacity(), v1.capacity());
+}
+
+bool test_30_resize_with_new_value() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1(10, 2);
+    v1.resize(16, 4);
+
+    TVector<int> v2({ 2, 2, 2, 2 ,2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4 });
+
+    actual_result &= (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result) &&
+        TestSystem::check(v2.size(), v1.size()) &&
         TestSystem::check(v2.capacity(), v1.capacity());
 }
 
@@ -514,6 +531,8 @@ int main() {
         " resize_tvector_with_greater_size");
     TestSystem::start_test(test_29_resize_with_greater_size_and_cap,
         " resize_with_greater_size_and_cap");
+    TestSystem::start_test(test_30_resize_with_new_value,
+        " resize_with_new_value");
 
     TestSystem::print_final_info();
 
