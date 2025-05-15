@@ -1,6 +1,7 @@
 // Copyright 2025 Viktoria Buzlaeva
 
 #include <iostream>
+#include <random>
 
 #ifndef GAMESTORE_TVECTOR_TVECTOR_H_
 #define GAMESTORE_TVECTOR_TVECTOR_H_
@@ -103,7 +104,8 @@ class TVector {
     void reset_memory_for_delete() noexcept;
     inline bool is_full() const noexcept;
     inline size_t get_right_position(size_t) const noexcept;
-    inline void swap(size_t, size_t) noexcept;
+    inline size_t get_random_position(size_t, size_t) const noexcept;
+    inline void swap_positions(size_t, size_t) noexcept;
 };
 
 template <class T>
@@ -636,9 +638,9 @@ void shuffle(TVector<T>& vec) noexcept {
     for (size_t i = 0; i < vec._size + vec._deleted; i++) {
         if (vec._states[i] == busy) {
             do {
-                rand_i = rand() % (vec._size + vec._deleted);
+                rand_i = vec.get_random_position(0, vec._size + vec._deleted);
             } while (vec._states[rand_i] != busy);
-            vec.swap(i, rand_i);
+            vec.swap_positions(i, rand_i);
         }
     }
 }
@@ -821,7 +823,15 @@ size_t TVector<T>::get_right_position(size_t pos) const noexcept {
 }
 
 template <class T>
-inline void TVector<T>::swap(size_t first, size_t second) noexcept {
+size_t TVector<T>::get_random_position(size_t min, size_t max) const noexcept {
+    std::random_device rnd;
+    std::mt19937 gen(rnd());
+    std::uniform_int_distribution<size_t> dist(min, max);
+    return dist(gen);
+}
+
+template <class T>
+inline void TVector<T>::swap_positions(size_t first, size_t second) noexcept {
     T tmp = _data[first];
     _data[first] = _data[second];
     _data[second] = tmp;
