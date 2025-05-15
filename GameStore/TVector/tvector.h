@@ -522,8 +522,8 @@ void TVector<T>::reserve(size_t new_capacity) noexcept {
 
 template <class T>
 void TVector<T>::shrink_to_fit() noexcept {
-    if (_deleted > 0) {
-        _capacity = (_size / STEP_OF_CAPACITY + 1) * STEP_OF_CAPACITY;
+    if (_deleted > 0 || _capacity > _size) {
+        _capacity = _size;
 
         T* new_data = new T[_capacity];
         State* new_states = new State[_capacity];
