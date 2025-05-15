@@ -799,6 +799,150 @@ bool test_52_try_replace_deleted_elem() {
     return TestSystem::check(expected_result, actual_result);
 }
 
+bool test_53_find_first_elem_tvector() {
+    TVector<int> v({ 1, 2, 3, 4, 3 });
+    int i = find_first(v, 3);
+
+    return TestSystem::check(2, i);
+}
+
+bool test_54_try_find_first_elem_tvector() {
+    bool expected_result = true;
+    bool actual_result = false;
+    TVector<int> v({ 1, 2, 3, 4, 3 });
+
+    try {
+        int i = find_first(v, 6);
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_55_find_last_elem_tvector() {
+    TVector<int> v({ 1, 2, 3, 4, 3 });
+    int i = find_last(v, 3);
+
+    return TestSystem::check(4, i);
+}
+
+bool test_56_try_find_last_elem_tvector() {
+    bool expected_result = true;
+    bool actual_result = false;
+    TVector<int> v({ 1, 2, 3, 4, 3 });
+
+    try {
+        int i = find_last(v, 6);
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_57_find_all_elems_tvector() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v({ 1, 2, 3, 4, 3 });
+    TVector<int> i1(find_all(v, 3));
+
+    TVector<int> i2({2, 4});
+
+    actual_result &= (i1 == i2);
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_58_try_find_all_elems_tvector() {
+    bool expected_result = true;
+    bool actual_result = false;
+    TVector<int> v({ 1, 2, 3, 4, 3 });
+
+    try {
+        TVector<int> i = find_all(v, 6);
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_59_find_first_elem_pointer_tvector() {
+    TVector<int> v({ 1, 2, 3, 4, 3 });
+    int* i = find_first_pointer(v, 3);
+
+    return TestSystem::check(v.data() + 2, i);
+}
+
+bool test_60_try_find_first_elem_pointer_tvector() {
+    bool expected_result = true;
+    bool actual_result = false;
+    TVector<int> v({ 1, 2, 3, 4, 3 });
+
+    try {
+        int* i = find_first_pointer(v, 6);
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_61_find_last_elem_pointer_tvector() {
+    TVector<int> v({ 1, 2, 3, 4, 3 });
+    int* i = find_last_pointer(v, 3);
+
+    return TestSystem::check(v.data() + 4, i);
+}
+
+bool test_62_try_find_last_elem_pointer_tvector() {
+    bool expected_result = true;
+    bool actual_result = false;
+    TVector<int> v({ 1, 2, 3, 4, 3 });
+
+    try {
+        int* i = find_last_pointer(v, 6);
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_63_find_all_elems_pointers_tvector() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v({ 1, 2, 3, 4, 3 });
+    TVector<int*> i1(find_all_pointers(v, 3));
+
+    TVector<int*> i2({ v.data() + 2, v.data() + 4 });
+
+    actual_result &= (i1 == i2);
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_64_try_find_all_elems_pointers_tvector() {
+    bool expected_result = true;
+    bool actual_result = false;
+    TVector<int> v({ 1, 2, 3, 4, 3 });
+
+    try {
+        TVector<int*> i = find_all_pointers(v, 6);
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
 int main() {
     Application application_1;
     Date date_1;
@@ -905,6 +1049,30 @@ int main() {
         " try_replace_out_of_range");
     TestSystem::start_test(test_52_try_replace_deleted_elem,
         " try_replace_deleted_elem");
+    TestSystem::start_test(test_53_find_first_elem_tvector,
+        " find_first_elem_tvector");
+    TestSystem::start_test(test_54_try_find_first_elem_tvector,
+        " try_find_first_elem_tvector");
+    TestSystem::start_test(test_55_find_last_elem_tvector,
+        " find_last_elem_tvector");
+    TestSystem::start_test(test_56_try_find_last_elem_tvector,
+        " try_find_last_elem_tvector");
+    TestSystem::start_test(test_57_find_all_elems_tvector,
+        " find_all_elems_tvector");
+    TestSystem::start_test(test_58_try_find_all_elems_tvector,
+        " try_find_all_elems_tvector");
+    TestSystem::start_test(test_59_find_first_elem_pointer_tvector,
+        " find_first_elem_pointer_tvector");
+    TestSystem::start_test(test_60_try_find_first_elem_pointer_tvector,
+        " try_find_first_elem_pointer_tvector");
+    TestSystem::start_test(test_61_find_last_elem_pointer_tvector,
+        " find_last_elem_pointer_tvector");
+    TestSystem::start_test(test_62_try_find_last_elem_pointer_tvector,
+        " try_find_last_elem_pointer_tvector");
+    TestSystem::start_test(test_63_find_all_elems_pointers_tvector,
+        " find_all_elems_pointers_tvector");
+    TestSystem::start_test(test_64_try_find_all_elems_pointers_tvector,
+        " try_find_all_elems_pointers_tvector");
 
     TestSystem::print_final_info();
 

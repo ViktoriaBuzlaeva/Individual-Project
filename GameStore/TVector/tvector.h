@@ -1,9 +1,9 @@
 // Copyright 2025 Viktoria Buzlaeva
 
+#include <iostream>
+
 #ifndef GAMESTORE_TVECTOR_TVECTOR_H_
 #define GAMESTORE_TVECTOR_TVECTOR_H_
-
-#include <iostream>
 
 #define STEP_OF_CAPACITY 15
 
@@ -82,11 +82,17 @@ class TVector {
     friend void sort_rec(TVector<T>&, size_t, size_t) noexcept;
 
     template <class T>
-    friend int find_first(const TVector<T>&, T);
+    friend size_t find_first(const TVector<T>&, T);
     template <class T>
-    friend int find_last(const TVector<T>&, T);
+    friend size_t find_last(const TVector<T>&, T);
     template <class T>
-    friend int* find_all(const TVector<T>&, T);
+    friend TVector<T> find_all(const TVector<T>&, T);
+    template <class T>
+    friend T* find_first_pointer(const TVector<T>&, T);
+    template <class T>
+    friend T* find_last_pointer(const TVector<T>&, T);
+    template <class T>
+    friend TVector<T*> find_all_pointers(const TVector<T>&, T);
 
  private:
     size_t _deleted;
@@ -390,8 +396,7 @@ void TVector<T>::erase(size_t pos, size_t count) {
         ("Error in erase method: position out of range!");
     if (pos == _size + _deleted - 1 && count == 1) {
         pop_back();
-    }
-    else {
+    } else {
         _size -= count;
         pos = get_right_position(pos);
         _deleted += count;
@@ -620,6 +625,98 @@ template <class T>
 inline T& TVector<T>::operator[] (size_t pos) noexcept {
     get_right_position(pos);
     return _data[pos];
+}
+
+template <class T>
+size_t find_first(const TVector<T>& vec, T value) {
+    if (vec._size != 0) {
+        for (size_t i = 0; i < vec._size + vec._deleted; i++) {
+            if (vec._data[i] == value && vec._states[i] == busy) {
+                i = vec.get_right_position(i);
+                return i;
+            }
+        }
+    }
+    throw std::logic_error("Error in find method: elem was not found!");
+}
+
+template <class T>
+size_t find_last(const TVector<T>& vec, T value) {
+    if (vec._size != 0) {
+        for (size_t i = vec._size + vec._deleted - 1; i > 0; i--) {
+            if (vec._data[i] == value && vec._states[i] == busy) {
+                i = vec.get_right_position(i);
+                return i;
+            }
+        }
+    }
+    throw std::logic_error("Error in find method: elem was not found!");
+}
+
+template <class T>
+TVector<T> find_all(const TVector<T>& vec, T value) {
+    if (vec._size != 0) {
+        size_t size = 0;
+        for (size_t i = 0; i < vec._size + vec._deleted; i++) {
+            if (vec._data[i] == value && vec._states[i] == busy) size++;
+        }
+        if (size != 0) {
+            TVector<T> result(size);
+            for (size_t i = 0, j = 0; j < size; i++) {
+                if (vec._data[i] == value && vec._states[i] == busy) {
+                    result[j] = vec.get_right_position(i);
+                    j++;
+                }
+            }
+            return result;
+        }
+    }
+    throw std::logic_error("Error in find method: elem was not found!");
+}
+
+template <class T>
+T* find_first_pointer(const TVector<T>& vec, T value) {
+    if (vec._size != 0) {
+        for (size_t i = 0; i < vec._size + vec._deleted; i++) {
+            if (vec._data[i] == value && vec._states[i] == busy) {
+                return vec._data + i;
+            }
+        }
+    }
+    throw std::logic_error("Error in find method: elem was not found!");
+}
+
+template <class T>
+T* find_last_pointer(const TVector<T>& vec, T value) {
+    if (vec._size != 0) {
+        for (size_t i = vec._size + vec._deleted - 1; i > 0; i--) {
+            if (vec._data[i] == value && vec._states[i] == busy) {
+                return vec._data + i;
+            }
+        }
+    }
+    throw std::logic_error("Error in find method: elem was not found!");
+}
+
+template <class T>
+TVector<T*> find_all_pointers(const TVector<T>& vec, T value) {
+    if (vec._size != 0) {
+        size_t size = 0;
+        for (size_t i = 0; i < vec._size + vec._deleted; i++) {
+            if (vec._data[i] == value && vec._states[i] == busy) size++;
+        }
+        if (size != 0) {
+            TVector<T*> result(size);
+            for (size_t i = 0, j = 0; j < size; i++) {
+                if (vec._data[i] == value && vec._states[i] == busy) {
+                    result[j] = vec._data + i;
+                    j++;
+                }
+            }
+            return result;
+        }
+    }
+    throw std::logic_error("Error in find method: elem was not found!");
 }
 
 template <class T>
