@@ -957,6 +957,21 @@ bool test_65_shuffle_tvector() {
         TestSystem::check(v2.capacity(), v1.capacity());
 }
 
+bool test_66_sort_tvector() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1({ 5, 2, 3, 1, 4 });
+    sort_hoare(v1);
+
+    TVector<int> v2({ 1, 2, 3, 4, 5 });
+
+    actual_result &= (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result) &&
+        TestSystem::check(v2.size(), v1.size()) &&
+        TestSystem::check(v2.capacity(), v1.capacity());
+}
+
 int main() {
     Application application_1;
     Date date_1;
@@ -1088,6 +1103,7 @@ int main() {
     TestSystem::start_test(test_64_try_find_all_elems_pointers_tvector,
         " try_find_all_elems_pointers_tvector");
     TestSystem::start_test(test_65_shuffle_tvector, " shuffle_tvector");
+    TestSystem::start_test(test_66_sort_tvector, " sort_tvector");
 
     TestSystem::print_final_info();
 

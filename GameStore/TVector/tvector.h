@@ -646,6 +646,35 @@ void shuffle(TVector<T>& vec) noexcept {
 }
 
 template <class T>
+void sort_hoare(TVector<T>& vec) noexcept {
+    if (vec._size <= 1) return;
+    sort_rec(vec, 0, vec._size + vec._deleted - 1);
+}
+
+template <class T>
+void sort_rec(TVector<T>& vec, size_t left, size_t right) noexcept {
+    while (vec._states[left] != busy) left++;
+    if (left < right) {
+        size_t l = left, r = right;
+        size_t base_pos = (left + right) * 0.5;
+        while (vec._states[left] != busy) base_pos++;
+        T base_value = vec._data[base_pos];
+        while (l <= r) {
+            while (vec._states[l] != busy || vec._data[l] < base_value) { l++; }
+            while (vec._states[r] != busy || vec._data[r] > base_value) { r--; }
+
+            if (l < r) {
+                vec.swap_positions(l, r);
+                l++; r--;
+            }
+            else { break; }
+        }
+        sort_rec(vec, left, r);
+        sort_rec(vec, r + 1, right);
+    }
+}
+
+template <class T>
 size_t find_first(const TVector<T>& vec, T value) {
     if (vec._size != 0) {
         for (size_t i = 0; i < vec._size + vec._deleted; i++) {
