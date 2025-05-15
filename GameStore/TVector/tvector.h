@@ -103,7 +103,7 @@ class TVector {
     void reset_memory_for_delete() noexcept;
     inline bool is_full() const noexcept;
     inline size_t get_right_position(size_t) const noexcept;
-    inline void swap_positions(size_t, size_t) noexcept;
+    inline void swap(size_t, size_t) noexcept;
 };
 
 template <class T>
@@ -522,8 +522,10 @@ template <class T>
 void TVector<T>::shrink_to_fit() noexcept {
     if (_deleted > 0) {
         _capacity = (_size / STEP_OF_CAPACITY + 1) * STEP_OF_CAPACITY;
+
         T* new_data = new T[_capacity];
         State* new_states = new State[_capacity];
+
         size_t j = 0;
         for (size_t i = 0; i < _size + _deleted; i++) {
             if (_states[i] == busy) {
@@ -625,6 +627,20 @@ template <class T>
 inline T& TVector<T>::operator[] (size_t pos) noexcept {
     get_right_position(pos);
     return _data[pos];
+}
+
+template <class T>
+void shuffle(TVector<T>& vec) noexcept {
+    if (vec._size <= 1) return;
+    size_t rand_i;
+    for (size_t i = 0; i < vec._size + vec._deleted; i++) {
+        if (vec._states[i] == busy) {
+            do {
+                rand_i = rand() % (vec._size + vec._deleted);
+            } while (vec._states[rand_i] != busy);
+            vec.swap(i, rand_i);
+        }
+    }
 }
 
 template <class T>
@@ -802,6 +818,13 @@ size_t TVector<T>::get_right_position(size_t pos) const noexcept {
     }
     while (_states[i] == deleted) i++;
     return i;
+}
+
+template <class T>
+inline void TVector<T>::swap(size_t first, size_t second) noexcept {
+    T tmp = _data[first];
+    _data[first] = _data[second];
+    _data[second] = tmp;
 }
 
 #endif  // GAMESTORE_TVECTOR_TVECTOR_H_
