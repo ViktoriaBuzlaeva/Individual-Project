@@ -660,14 +660,14 @@ void sort_rec(TVector<T>& vec, size_t left, size_t right) noexcept {
         while (vec._states[left] != busy) base_pos++;
         T base_value = vec._data[base_pos];
         while (l <= r) {
-            while (vec._states[l] != busy || vec._data[l] < base_value) { l++; }
-            while (vec._states[r] != busy || vec._data[r] > base_value) { r--; }
-
+            while (vec._states[l] != busy || vec._data[l] < base_value) l++;
+            while (vec._states[r] != busy || vec._data[r] > base_value) r--;
             if (l < r) {
                 vec.swap_positions(l, r);
                 l++; r--;
+            } else {
+                break;
             }
-            else { break; }
         }
         sort_rec(vec, left, r);
         sort_rec(vec, r + 1, right);
