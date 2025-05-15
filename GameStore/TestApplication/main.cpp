@@ -706,6 +706,99 @@ bool test_46_try_erase_empty_tvector() {
     return TestSystem::check(expected_result, actual_result);
 }
 
+bool test_47_shrink_to_fit_tvector() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1(14, 2);
+    v1.insert(2, 333);
+    v1.erase(2);
+
+    TVector<int> v2({ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 });
+
+    actual_result &= (*(v1.data() + 2) != *(v2.data() + 2));
+    v1.shrink_to_fit();
+    actual_result &= (*(v1.data() + 2) == *(v2.data() + 2));
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_48_replace_tvector() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1({ 1, 2, 3, 4, 5 });
+
+    TVector<int> v2({ 1, 2, 333, 4, 5 });
+    TVector<int> v3({ 1, 2, 3, 4, 5 });
+
+    v1.replace(2, 333);
+    actual_result &= (v1 == v2);
+    v1.replace(v1.data() + 2, 3);
+    actual_result &= (v1 == v3);
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_49_replace_after_delete() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> v1(14, 2);
+    v1.erase(2);
+    v1.replace(2, 333);
+
+    TVector<int> v2({ 2, 2, 333, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 });
+
+    actual_result &= (v1 == v2);
+    actual_result &= (*(v1.data() + 2) != *(v2.data() + 2));
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_50_try_replace_out_of_range() {
+    bool expected_result = true;
+    bool actual_result = false;
+    TVector<int> v({ 1, 2, 3, 4, 5 });
+
+    try {
+        v.replace(5, 555);
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_51_try_replace_out_of_range() {
+    bool expected_result = true;
+    bool actual_result = false;
+    TVector<int> v({ 1, 2, 3, 4, 5 });
+
+    try {
+        v.replace(v.data() + 5, 555);
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_52_try_replace_deleted_elem() {
+    bool expected_result = true;
+    bool actual_result = false;
+    TVector<int> v(14, 2);
+    v.erase(2);
+
+    try {
+        v.replace(v.data() + 2, 555);
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
 int main() {
     Application application_1;
     Date date_1;
@@ -801,6 +894,17 @@ int main() {
         " erase_without_reset_memory_for_delete");
     TestSystem::start_test(test_46_try_erase_empty_tvector,
         " try_erase_empty_tvector");
+    TestSystem::start_test(test_47_shrink_to_fit_tvector,
+        " shrink_to_fit_tvector");
+    TestSystem::start_test(test_48_replace_tvector, " replace_tvector");
+    TestSystem::start_test(test_49_replace_after_delete,
+        " replace_after_delete");
+    TestSystem::start_test(test_50_try_replace_out_of_range,
+        " try_replace_out_of_range");
+    TestSystem::start_test(test_51_try_replace_out_of_range,
+        " try_replace_out_of_range");
+    TestSystem::start_test(test_52_try_replace_deleted_elem,
+        " try_replace_deleted_elem");
 
     TestSystem::print_final_info();
 

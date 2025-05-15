@@ -53,6 +53,7 @@ class TVector {
     void erase(size_t, size_t);
 
     void replace(size_t, const T&);
+    void replace(T*, const T&);
 
     void assign(size_t, const T&) noexcept;
     void assign(std::initializer_list<T>) noexcept;
@@ -370,9 +371,7 @@ void TVector<T>::pop_back() {
 
 template <class T>
 void TVector<T>::erase(size_t pos) {
-    if (is_empty()) throw std::logic_error
-        ("Error in pop back method: vector is empty!");
-    if (pos > _size + _deleted) throw std::logic_error
+    if (pos >= _size + _deleted) throw std::logic_error
         ("Error in erase method: position out of range!");
     if (pos == _size + _deleted - 1) {
         pop_back();
@@ -387,13 +386,12 @@ void TVector<T>::erase(size_t pos) {
 
 template <class T>
 void TVector<T>::erase(size_t pos, size_t count) {
-    if (is_empty()) throw std::logic_error
-        ("Error in pop back method: vector is empty!");
     if (pos + count >= _size + _deleted) throw std::logic_error
         ("Error in erase method: position out of range!");
     if (pos == _size + _deleted - 1 && count == 1) {
         pop_back();
-    } else {
+    }
+    else {
         _size -= count;
         pos = get_right_position(pos);
         _deleted += count;
@@ -403,6 +401,23 @@ void TVector<T>::erase(size_t pos, size_t count) {
         }
     }
     reset_memory_for_delete();
+}
+
+template <class T>
+void TVector<T>::replace(size_t pos, const T& value) {
+    if (pos >= _size + _deleted) throw std::logic_error
+        ("Error in replace method: position out of range!");
+    pos = get_right_position(pos);
+    _data[pos] = value;
+}
+
+template <class T>
+void TVector<T>::replace(T* pos, const T& value) {
+    if (pos < begin() || pos >= end()) throw std::logic_error
+        ("Error in replace method: position out of range!");
+    if (_states[pos - data()] == deleted) throw std::logic_error
+        ("Error in replace method: element does not exist!");
+    *pos = value;
 }
 
 template <class T>
@@ -457,9 +472,11 @@ inline const T& TVector<T>::at(size_t pos) const {
 
 template <class T>
 void TVector<T>::clear() noexcept {
-    set_memory(0);
-    for (size_t i = 0; i < _capacity; i++) {
-        _states[i] = empty;
+    if (_size != 0) {
+        set_memory(0);
+        for (size_t i = 0; i < _capacity; i++) {
+            _states[i] = empty;
+        }
     }
 }
 
@@ -487,6 +504,33 @@ void TVector<T>::reserve(size_t new_capacity) noexcept {
         for (; i < _capacity; i++) {
             new_states[i] = empty;
         }
+
+        delete[] _data;
+        delete[] _states;
+
+        _data = new_data;
+        _states = new_states;
+    }
+}
+
+template <class T>
+void TVector<T>::shrink_to_fit() noexcept {
+    if (_deleted > 0) {
+        _capacity = (_size / STEP_OF_CAPACITY + 1) * STEP_OF_CAPACITY;
+        T* new_data = new T[_capacity];
+        State* new_states = new State[_capacity];
+        size_t j = 0;
+        for (size_t i = 0; i < _size + _deleted; i++) {
+            if (_states[i] == busy) {
+                new_data[j] = _data[i];
+                new_states[j] = busy;
+                j++;
+            }
+        }
+        for (; j < _capacity; j++) {
+            new_states[j] = empty;
+        }
+        _deleted = 0;
 
         delete[] _data;
         delete[] _states;
@@ -652,12 +696,15 @@ template <class T>
 size_t TVector<T>::get_right_position(size_t pos) const noexcept {
     if (_deleted == 0) return pos;
     size_t count_busy = 0;
-    for (size_t i = 0; i != pos; i++) {
+    size_t i = 0;
+        for (; i < pos; i++) {
         if (_states[i] == busy) {
-            if (pos == count_busy) return i;
+            if (pos == count_busy) break;
             count_busy++;
         }
     }
+    while (_states[i] == deleted) i++;
+    return i;
 }
 
 #endif  // GAMESTORE_TVECTOR_TVECTOR_H_
