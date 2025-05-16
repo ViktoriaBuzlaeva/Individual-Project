@@ -171,19 +171,18 @@ template <class T>
 TVector<T>::TVector(const TVector<T>& other) {
     if (&other == NULL) throw std::logic_error
         ("Error in copy constructor: other vector doesn't exist!");
-    _size = other._size;
-    _deleted = other._deleted;
-    _capacity = other._capacity;
-    _data = new T[_capacity];
-    _states = new State[_capacity];
+    set_memory(other._size);
 
-    size_t i = 0;
-    for (; i < _size + _deleted; i++) {
-        _data[i] = other._data[i];
-        _states[i] = other._states[i];
+    size_t j = 0;
+    for (size_t i = 0; i < other._size + other._deleted; i++) {
+        if (other._states[i] == busy) {
+            _data[j] = other._data[i];
+            _states[j] = busy;
+            j++;
+        }
     }
-    for (; i < _capacity; i++) {
-        _states[i] = other._states[i];
+    for (; j < _capacity; j++) {
+        _states[j] = empty;
     }
 }
 
@@ -582,22 +581,18 @@ void TVector<T>::resize(size_t new_size, const T& value) noexcept {
 template <class T>
 TVector<T>& TVector<T>::operator = (const TVector<T>& other) noexcept {
     if (this != &other) {
-        delete[] _data;
-        delete[] _states;
+        set_memory(other._size);
 
-        _deleted = other._deleted;
-        _size = other._size;
-        _capacity = other._capacity;
-        _data = new T[_capacity];
-        _states = new State[_capacity];
-
-        size_t i = 0;
-        for (; i < _size + _deleted; i++) {
-            _data[i] = other._data[i];
-            _states[i] = other._states[i];
+        size_t j = 0;
+        for (size_t i = 0; i < other._size + other._deleted; i++) {
+            if (other._states[i] == busy) {
+                _data[j] = other._data[i];
+                _states[j] = busy;
+                j++;
+            }
         }
-        for (; i < _capacity; i++) {
-            _states[i] = empty;
+        for (; j < _capacity; j++) {
+            _states[j] = empty;
         }
     }
     return *this;
@@ -768,8 +763,8 @@ TVector<T*> find_all_pointers(const TVector<T>& vec, T value) {
 
 template <class T>
 void TVector<T>::set_memory(size_t size) noexcept {
-    delete[] _data;
-    delete[] _states;
+    if (_data != nullptr) delete[] _data;
+    if (_states != nullptr)delete[] _states;
     _deleted = 0;
     if (_size != size) _size = size;
     _capacity = ((_size + _deleted) / STEP_OF_CAPACITY + 1) * STEP_OF_CAPACITY;
