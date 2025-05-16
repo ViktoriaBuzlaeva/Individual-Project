@@ -784,14 +784,18 @@ void TVector<T>::reset_memory() noexcept {
     T* new_data = new T[_capacity];
     State* new_states = new State[_capacity];
 
-    size_t i = 0;
-    for (; i < _size + _deleted; i++) {
-        new_data[i] = _data[i];
-        new_states[i] = _states[i];
+    size_t j = 0;
+    for (size_t i = 0; i < _size + _deleted; i++) {
+        if (_states[i] == busy) {
+            new_data[j] = _data[i];
+            new_states[j] = busy;
+            j++;
+        }
     }
-    for (; i < _capacity; i++) {
-        new_states[i] = empty;
+    for (; j < _capacity; j++) {
+        new_states[j] = empty;
     }
+    _deleted = 0;
 
     delete[] _data;
     delete[] _states;
@@ -805,29 +809,7 @@ void TVector<T>::reset_memory_for_delete() noexcept {
     if (_size == 0) {
         clear();
     } else if (_deleted >= 0.15 * _size) {
-        _deleted = 0;
-        _capacity = (_size / STEP_OF_CAPACITY + 1) * STEP_OF_CAPACITY;
-
-        T* new_data = new T[_capacity];
-        State* new_states = new State[_capacity];
-
-        size_t j = 0;
-        for (size_t i = 0; j < _size + _deleted; i++) {
-            if (_states[i] == busy) {
-                new_data[j] = _data[i];
-                new_states[j] = busy;
-                j++;
-            }
-        }
-        for (; j < _capacity; j++) {
-            new_states[j] = empty;
-        }
-
-        delete[] _data;
-        delete[] _states;
-
-        _data = new_data;
-        _states = new_states;
+        reset_memory();
     }
 }
 
