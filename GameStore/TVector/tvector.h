@@ -346,9 +346,9 @@ void TVector<T>::insert(size_t pos, std::initializer_list<T> data) {
     _size += data.size();
     if (is_full()) reset_memory();
     pos = get_right_position(pos);
-    for (size_t i = _size + _deleted; i > pos + data.size(); i--) {
-        _data[i] = _data[i - 1 - data.size()];
-        _states[i] = _states[i - 1 - data.size()];
+    for (size_t i = _size + _deleted; i > pos; i--) {
+        _data[i] = _data[i - data.size()];
+        _states[i] = _states[i - data.size()];
     }
     auto it = data.begin();
     for (size_t i = pos, j = 0; j < data.size(); i++, j++) {
@@ -816,15 +816,12 @@ inline bool TVector<T>::is_full() const noexcept {
 template <class T>
 size_t TVector<T>::get_right_position(size_t pos) const noexcept {
     if (_deleted == 0) return pos;
-    size_t count_busy = 0;
     size_t i = 0;
-        for (; i < pos; i++) {
-        if (_states[i] == busy) {
-            if (pos == count_busy) break;
-            count_busy++;
-        }
+    while (_states[i] != busy) i++;
+    for (size_t j = 0; j != pos; i++) {
+        if (_states[i] == busy) j++;
     }
-    while (_states[i] == deleted) i++;
+    while (_states[i] != busy) i++;
     return i;
 }
 

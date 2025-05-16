@@ -681,7 +681,7 @@ bool test_45_erase_without_reset_memory_for_delete() {
     TVector<int> v1(14, 2);
     v1.insert(3, 4);
     v1.erase(3);
-    v1.insert(4, 5);
+    v1.insert(3, 5);
 
     TVector<int> v2({ 2, 2, 2, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 });
 
@@ -974,6 +974,34 @@ bool test_66_sort_tvector() {
         TestSystem::check(v2.capacity(), v1.capacity());
 }
 
+bool test_67_insert_after_delete() {
+    bool expected_result = true;
+    bool actual_result = true;
+    int* mass = new int[100];
+    for (int i = 0; i < 100; i++) {
+        mass[i] = i + 1;
+    }
+    TVector<int> v1(100, mass);
+    v1.erase(3);
+    v1.pop_front();
+    v1.pop_back();
+    v1.erase(3, 6);
+    v1.insert(4, 55);
+    v1.insert(6, { 33, 44, 55 });
+
+    TVector<int> v2({ 2, 3, 5, 12, 55, 13, 33, 44, 55, 14, 15,
+        16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+        32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
+        48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
+        64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
+        80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
+        96, 97, 98, 99 });
+
+    actual_result &= (v1 == v2);
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
 int main() {
     Application application_1;
     Date date_1;
@@ -1106,6 +1134,8 @@ int main() {
         " try_find_all_elems_pointers_tvector");
     TestSystem::start_test(test_65_shuffle_tvector, " shuffle_tvector");
     TestSystem::start_test(test_66_sort_tvector, " sort_tvector");
+    TestSystem::start_test(test_67_insert_after_delete,
+        " insert_after_delete");
 
     TestSystem::print_final_info();
 
