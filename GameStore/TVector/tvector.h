@@ -95,6 +95,8 @@ class TVector {
     template <class T>
     friend TVector<T*> find_all_pointers(const TVector<T>&, T);
 
+    void print() noexcept;
+
  private:
     size_t _deleted;
     State* _states;
@@ -759,6 +761,18 @@ TVector<T*> find_all_pointers(const TVector<T>& vec, T value) {
         }
     }
     throw std::logic_error("Error in find method: elem was not found!");
+}
+
+template <class T>
+void TVector<T>::print() noexcept {
+    if (_data == nullptr) { return; }
+    std::cout << "{ ";
+    for (size_t i = 0; i < _size + _deleted - 1; i++) {
+        if (_states[i] != deleted) {
+            std::cout << _data[i] << ", ";
+        }
+    }
+    std::cout << _data[_size + _deleted - 1] << " }";
 }
 
 template <class T>
