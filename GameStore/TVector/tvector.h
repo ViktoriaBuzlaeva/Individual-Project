@@ -765,7 +765,9 @@ TVector<T*> find_all_pointers(const TVector<T>& vec, T value) {
 
 template <class T>
 void TVector<T>::print() noexcept {
-    if (_data == nullptr) { return; }
+    if (_data == nullptr) {
+        return;
+    }
     std::cout << "{ ";
     for (size_t i = 0; i < _size + _deleted - 1; i++) {
         if (_states[i] != deleted) {
