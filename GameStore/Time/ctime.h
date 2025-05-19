@@ -9,11 +9,11 @@ class CTime {
     int _hours;
     int _minutes;
     int _seconds;
-    
+
  public:
-    CTime(int hours = 0, int minutes = 0, int seconds = 0);
+    explicit CTime(int hours = 0, int minutes = 0, int seconds = 0);
     CTime(const CTime&);
-    CTime(std::string);
+    explicit CTime(std::string);
 
     inline const int hours() const noexcept;
     inline const int minutes() const noexcept;
