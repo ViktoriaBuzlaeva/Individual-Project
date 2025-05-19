@@ -87,10 +87,10 @@ bool test_1_create_default_tvector() {
 }
 
 bool test_2_create_tvector_with_size() {
-    TVector<int> v(20);
+    TVector<int> v(30);
 
-    return TestSystem::check(static_cast <size_t>(20), v.size()) &&
-        TestSystem::check(static_cast <size_t>(30), v.capacity());
+    return TestSystem::check(static_cast <size_t>(30), v.size()) &&
+        TestSystem::check(static_cast <size_t>(45), v.capacity());
 }
 
 bool test_3_create_tvector_with_array_and_size() {
