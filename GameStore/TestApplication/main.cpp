@@ -17,7 +17,7 @@ int main() {
     Game game_1;
     GameStore gamestore_1;
     Review review_1;
-    Time time_1;
+    CTime time_1;
     User user_1;
 
     return 0;
