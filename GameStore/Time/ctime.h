@@ -3,7 +3,7 @@
 #ifndef GAMESTORE_TIME_CTIME_H_
 #define GAMESTORE_TIME_CTIME_H_
 
-class Time {
+class CTime {
     int _hours;
     int _minutes;
     int _seconds;
