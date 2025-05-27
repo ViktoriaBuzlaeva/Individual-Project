@@ -96,6 +96,8 @@ class TVector {
     friend TVector<T*> find_all_pointers(const TVector<T>&, T);
 
     void print() noexcept;
+    template <class T>
+    friend std::ostream& operator << (std::ostream&, const TVector<T>&);
 
  private:
     size_t _deleted;
@@ -285,9 +287,11 @@ template <class T>
 void TVector<T>::push_front(const T& value) noexcept {
     _size++;
     if (is_full()) reset_memory();
-    for (size_t i = _size + _deleted - 1; i > 0; i--) {
-        _data[i] = _data[i - 1];
-        _states[i] = _states[i - 1];
+    if (_states[0] != deleted) {
+        for (size_t i = _size + _deleted - 1; i > 0; i--) {
+            _data[i] = _data[i - 1];
+            _states[i] = _states[i - 1];
+        }
     }
     _data[0] = value;
     _states[0] = busy;
@@ -366,7 +370,8 @@ void TVector<T>::pop_front() {
         ("Error in pop front method: vector is empty!");
     _size--;
     _deleted++;
-    _states[0] = deleted;
+    size_t pos = get_right_position(0);
+    _states[pos] = deleted;
     reset_memory_for_delete();
 }
 
@@ -775,6 +780,21 @@ void TVector<T>::print() noexcept {
         }
     }
     std::cout << _data[_size + _deleted - 1] << " }";
+}
+
+template <class T>
+std::ostream& operator << (std::ostream& out, const TVector<T>& vec) {
+    if (vec._data == nullptr) {
+        return out;
+    }
+    out << "{ ";
+    for (size_t i = 0; i < vec._size + vec._deleted - 1; i++) {
+        if (vec._states[i] != deleted) {
+            out << vec._data[i] << ", ";
+        }
+    }
+    out << vec._data[vec._size + vec._deleted - 1] << " }";
+    return out;
 }
 
 template <class T>

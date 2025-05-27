@@ -282,31 +282,21 @@ bool test_16_operator_inequality_with_not_equal_tvectors() {
 }
 
 bool test_17_assign_with_size_and_value_tvector() {
-    bool expected_result = true;
-    bool actual_result = true;
     TVector<int> v1(16, 2);
     v1.assign(5, 1);
 
     TVector<int> v2({ 1, 1, 1, 1, 1 });
 
-    actual_result &= (v1 == v2);
-
-    return TestSystem::check(expected_result, actual_result) &&
-        TestSystem::check(v2.size(), v1.size());
+    return TestSystem::check(v2, v1);
 }
 
 bool test_18_assign_with_array_tvector() {
-    bool expected_result = true;
-    bool actual_result = true;
     TVector<int> v1;
     v1.assign({1, 1, 1, 1, 1});
 
     TVector<int> v2({ 1, 1, 1, 1, 1 });
 
-    actual_result &= (v1 == v2);
-
-    return TestSystem::check(expected_result, actual_result) &&
-        TestSystem::check(v2.size(), v1.size());
+    return TestSystem::check(v2, v1);
 }
 
 bool test_19_assign_tvector_with_reset_memory() {
@@ -330,16 +320,11 @@ bool test_19_assign_tvector_with_reset_memory() {
 }
 
 bool test_20_operator_assign_other_tvector() {
-    bool expected_result = true;
-    bool actual_result = true;
     TVector<int> v1({ 1, 2, 3, 4 });
     TVector<int> v2({ 1, 2 });
     v1 = v2;
 
-    actual_result &= (v1 == v2);
-
-    return TestSystem::check(expected_result, actual_result) &&
-        TestSystem::check(v2.size(), v1.size()) &&
+    return TestSystem::check(v2, v1) &&
         TestSystem::check(v2.capacity(), v1.capacity());
 }
 
@@ -399,32 +384,22 @@ bool test_25_reserve_with_greater_cap() {
 }
 
 bool test_26_resize_tvector_with_less_size() {
-    bool expected_result = true;
-    bool actual_result = true;
     TVector<int> v1(14, 2);
     v1.resize(10);
 
     TVector<int> v2(10, 2);
 
-    actual_result &= (v1 == v2);
-
-    return TestSystem::check(expected_result, actual_result) &&
-        TestSystem::check(v2.size(), v1.size()) &&
+    return TestSystem::check(v2, v1) &&
         TestSystem::check(v2.capacity(), v1.capacity());
 }
 
 bool test_27_resize_with_less_size_and_cap() {
-    bool expected_result = true;
-    bool actual_result = true;
     TVector<int> v1(16, 2);
     v1.resize(10);
 
     TVector<int> v2(10, 2);
 
-    actual_result &= (v1 == v2);
-
-    return TestSystem::check(expected_result, actual_result) &&
-        TestSystem::check(v2.size(), v1.size()) &&
+    return TestSystem::check(v2, v1) &&
         TestSystem::check(v2.capacity(), v1.capacity());
 }
 
@@ -449,79 +424,54 @@ bool test_29_resize_with_greater_size_and_cap() {
 }
 
 bool test_30_resize_with_new_value() {
-    bool expected_result = true;
-    bool actual_result = true;
     TVector<int> v1(10, 2);
     v1.resize(16, 4);
 
     TVector<int> v2({ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4 });
 
-    actual_result &= (v1 == v2);
-
-    return TestSystem::check(expected_result, actual_result) &&
-        TestSystem::check(v2.size(), v1.size()) &&
+    return TestSystem::check(v2, v1) &&
         TestSystem::check(v2.capacity(), v1.capacity());
 }
 
 bool test_31_push_front_tvector() {
-    bool expected_result = true;
-    bool actual_result = true;
     TVector<int> v1({ 2, 3, 4, 5 });
     v1.push_front(1);
 
     TVector<int> v2({ 1, 2, 3, 4, 5 });
 
-    actual_result &= (v1 == v2);
-
-    return TestSystem::check(expected_result, actual_result) &&
-        TestSystem::check(v2.size(), v1.size()) &&
+    return  TestSystem::check(v2, v1) &&
         TestSystem::check(v2.capacity(), v1.capacity());
 }
 
 bool test_32_push_front_with_reset_memory() {
-    bool expected_result = true;
-    bool actual_result = true;
     TVector<int> v1(14, 2);
     v1.push_front(1);
     v1.push_front(3);
 
     TVector<int> v2({ 3, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 });
 
-    actual_result &= (v1 == v2);
-
-    return TestSystem::check(expected_result, actual_result) &&
-        TestSystem::check(v2.size(), v1.size()) &&
+    return TestSystem::check(v2, v1) &&
         TestSystem::check(v2.capacity(), v1.capacity());
 }
 
 bool test_33_push_back_tvector() {
-    bool expected_result = true;
-    bool actual_result = true;
     TVector<int> v1({ 1, 2, 3, 4 });
     v1.push_back(5);
 
     TVector<int> v2({ 1, 2, 3, 4, 5 });
 
-    actual_result &= (v1 == v2);
-
-    return TestSystem::check(expected_result, actual_result) &&
-        TestSystem::check(v2.size(), v1.size()) &&
+    return TestSystem::check(v2, v1) &&
         TestSystem::check(v2.capacity(), v1.capacity());
 }
 
 bool test_34_push_front_with_reset_memory() {
-    bool expected_result = true;
-    bool actual_result = true;
     TVector<int> v1(14, 2);
     v1.push_back(1);
     v1.push_back(3);
 
     TVector<int> v2({ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 3 });
 
-    actual_result &= (v1 == v2);
-
-    return TestSystem::check(expected_result, actual_result) &&
-        TestSystem::check(v2.size(), v1.size()) &&
+    return TestSystem::check(v2, v1) &&
         TestSystem::check(v2.capacity(), v1.capacity());
 }
 
@@ -545,18 +495,13 @@ bool test_35_insert_tvector() {
 }
 
 bool test_36_insert_with_reset_memory() {
-    bool expected_result = true;
-    bool actual_result = true;
     TVector<int> v1(14, 2);
     v1.insert(2, 111);
     v1.insert(9, 333);
 
     TVector<int> v2({ 2, 2, 111, 2, 2, 2, 2, 2, 2, 333, 2, 2, 2, 2, 2, 2 });
 
-    actual_result &= (v1 == v2);
-
-    return TestSystem::check(expected_result, actual_result) &&
-        TestSystem::check(v2.size(), v1.size()) &&
+    return TestSystem::check(v2, v1) &&
         TestSystem::check(v2.capacity(), v1.capacity());
 }
 
@@ -591,12 +536,13 @@ bool test_39_pop_front_tvector() {
     v1.pop_front();
 
     TVector<int> v2({ 2, 3, 4, 5 });
-
     actual_result &= (v1 == v2);
 
-    return TestSystem::check(expected_result, actual_result) &&
-        TestSystem::check(v2.size(), v1.size()) &&
-        TestSystem::check(v2.capacity(), v1.capacity());
+    v1.pop_front();
+    TVector<int> v3({ 3, 4, 5 });
+    actual_result &= (v1 == v3);
+
+    return TestSystem::check(expected_result, actual_result);
 }
 
 bool test_40_pop_front_without_reset_memory_for_delete() {
@@ -630,17 +576,12 @@ bool test_41_try_pop_front_empty_tvector() {
 }
 
 bool test_42_pop_back_tvector() {
-    bool expected_result = true;
-    bool actual_result = true;
     TVector<int> v1({ 1, 2, 3, 4, 5 });
     v1.pop_back();
 
     TVector<int> v2({ 1, 2, 3, 4 });
 
-    actual_result &= (v1 == v2);
-
-    return TestSystem::check(expected_result, actual_result) &&
-        TestSystem::check(v2.size(), v1.size()) &&
+    return TestSystem::check(v2, v1) &&
         TestSystem::check(v2.capacity(), v1.capacity());
 }
 
@@ -846,16 +787,12 @@ bool test_56_try_find_last_elem_tvector() {
 }
 
 bool test_57_find_all_elems_tvector() {
-    bool expected_result = true;
-    bool actual_result = true;
     TVector<int> v({ 1, 2, 3, 4, 3 });
     TVector<int> i1(find_all(v, 3));
 
     TVector<int> i2({2, 4});
 
-    actual_result &= (i1 == i2);
-
-    return TestSystem::check(expected_result, actual_result);
+    return TestSystem::check(i2, i1);
 }
 
 bool test_58_try_find_all_elems_tvector() {
@@ -918,16 +855,12 @@ bool test_62_try_find_last_elem_pointer_tvector() {
 }
 
 bool test_63_find_all_elems_pointers_tvector() {
-    bool expected_result = true;
-    bool actual_result = true;
     TVector<int> v({ 1, 2, 3, 4, 3 });
     TVector<int*> i1(find_all_pointers(v, 3));
 
     TVector<int*> i2({ v.data() + 2, v.data() + 4 });
 
-    actual_result &= (i1 == i2);
-
-    return TestSystem::check(expected_result, actual_result);
+    return TestSystem::check(i2, i1);
 }
 
 bool test_64_try_find_all_elems_pointers_tvector() {
@@ -960,23 +893,16 @@ bool test_65_shuffle_tvector() {
 }
 
 bool test_66_sort_tvector() {
-    bool expected_result = true;
-    bool actual_result = true;
     TVector<int> v1({ 5, 2, 3, 1, 4 });
     sort_hoare(v1);
 
     TVector<int> v2({ 1, 2, 3, 4, 5 });
 
-    actual_result &= (v1 == v2);
-
-    return TestSystem::check(expected_result, actual_result) &&
-        TestSystem::check(v2.size(), v1.size()) &&
+    return TestSystem::check(v2, v1) &&
         TestSystem::check(v2.capacity(), v1.capacity());
 }
 
 bool test_67_insert_after_delete() {
-    bool expected_result = true;
-    bool actual_result = true;
     int* mass = new int[100];
     for (int i = 0; i < 100; i++) {
         mass[i] = i + 1;
@@ -997,14 +923,10 @@ bool test_67_insert_after_delete() {
         80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
         96, 97, 98, 99 });
 
-    actual_result &= (v1 == v2);
-
-    return TestSystem::check(expected_result, actual_result);
+    return TestSystem::check(v2, v1);
 }
 
 bool test_68_replace_after_deleted() {
-    bool expected_result = true;
-    bool actual_result = true;
     int* mass = new int[100];
     for (int i = 0; i < 100; i++) {
         mass[i] = i + 1;
@@ -1023,8 +945,8 @@ bool test_68_replace_after_deleted() {
         65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
         81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96,
         97, 98, 99 });
-    actual_result &= (v1 == v2);
-    return TestSystem::check(expected_result, actual_result);
+
+    return TestSystem::check(v2, v1);
 }
 
 bool test_69_insert_empty_tvector() {
@@ -1044,12 +966,11 @@ bool test_69_insert_empty_tvector() {
     v5.insert(0, 88);
     TVector<int> v6({ 88 });
     actual_result &= (v5 == v6);
+
     return TestSystem::check(expected_result, actual_result);
 }
 
 bool test_70_replace_by_find_pointer() {
-    bool expected_result = true;
-    bool actual_result = true;
     TVector<int> v1({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
         17, 18, 19, 20, 7, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
         34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51,
@@ -1057,14 +978,37 @@ bool test_70_replace_by_find_pointer() {
         69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86,
         7, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 });
     v1.replace(find_first_pointer(v1, 9), 99);
+
     TVector<int> v2({ 1, 2, 3, 4, 5, 6, 7, 8, 99, 10, 11, 12, 13, 14, 15, 16,
         17, 18, 19, 20, 7, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
         34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51,
         52, 53, 54, 7, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68,
         69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86,
         7, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 });
-    actual_result &= (v1 == v2);
-    return TestSystem::check(expected_result, actual_result);
+
+    return TestSystem::check(v2, v1);
+}
+
+bool test_71_erase_after_delete() {
+    int* mass = new int[100];
+    for (int i = 0; i < 100; i++) {
+        mass[i] = i + 1;
+    }
+    TVector<int> v1(100, mass);
+    v1.erase(3);
+    v1.pop_front();
+    v1.erase(3, 6);
+    v1.erase(89);
+    v1.erase(85, 6);
+
+    TVector<int> v2({ 2, 3, 5, 12, 13, 14, 15, 16,
+            17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
+            34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51,
+            52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68,
+            69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86,
+            87, 88, 89, 90, 91, 92, 93 });
+
+    return TestSystem::check(v2, v1);
 }
 
 int main() {
@@ -1207,6 +1151,8 @@ int main() {
         " insert_empty_tvector");
     TestSystem::start_test(test_70_replace_by_find_pointer,
         " replace_by_find_pointer");
+    TestSystem::start_test(test_71_erase_after_delete,
+        " erase_after_delete");
 
     TestSystem::print_final_info();
 
