@@ -2,6 +2,7 @@
 
 #include <windows.h>
 #include <iostream>
+#include <string>
 
 #include "../Application/application.h"
 #include "../Date/date.h"
@@ -1011,6 +1012,89 @@ bool test_71_erase_after_delete() {
     return TestSystem::check(v2, v1);
 }
 
+bool test_1_create_default_ctime() {
+    CTime t;
+
+    return TestSystem::check(0, t.hours()) &&
+        TestSystem::check(0, t.minutes()) &&
+        TestSystem::check(0, t.seconds());
+}
+
+bool test_2_create_ctime_with_init() {
+    CTime t(2, 30, 59);
+
+    return TestSystem::check(2, t.hours()) &&
+        TestSystem::check(30, t.minutes()) &&
+        TestSystem::check(59, t.seconds());
+}
+
+bool test_3_try_create_ctime_with_init() {
+    bool expected_result = true;
+    bool actual_result = false;
+
+    try {
+        CTime t(-2, 30, 59);
+        }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_4_create_ctime_with_copying() {
+    CTime t1(2, 30, 59);
+    CTime t2(t1);
+
+    return TestSystem::check(t1.hours(), t2.hours()) &&
+        TestSystem::check(t1.minutes(), t2.minutes()) &&
+        TestSystem::check(t1.seconds(), t2.seconds());
+}
+
+bool test_5_try_create_ctime_with_copying() {
+    bool expected_result = true;
+    bool actual_result = false;
+    CTime* t1 = NULL;
+
+    try {
+        CTime t2(*t1);
+        }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_6_create_ctime_with_str_init() {
+    CTime t("2:30:59");
+
+    return TestSystem::check(2, t.hours()) &&
+        TestSystem::check(30, t.minutes()) &&
+        TestSystem::check(59, t.seconds());
+}
+
+bool test_7_try_create_ctime_with_str_init() {
+    bool expected_result = true;
+    bool actual_result = false;
+
+    try {
+        CTime t("2:30:60");
+        }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_8_convert_ctime_to_string() {
+    std::string t_str = "2:30:59";
+    CTime t(t_str);
+
+    return TestSystem::check(t_str, t.to_string());
+}
+
 int main() {
     Application application_1;
     Date date_1;
@@ -1153,6 +1237,23 @@ int main() {
         " replace_by_find_pointer");
     TestSystem::start_test(test_71_erase_after_delete,
         " erase_after_delete");
+  
+    TestSystem::start_test(test_1_create_default_ctime,
+        " CTime.create_default_ctime");
+    TestSystem::start_test(test_2_create_ctime_with_init,
+        " CTime.create_ctime_with_init");
+    TestSystem::start_test(test_3_try_create_ctime_with_init,
+        " CTime.try_create_ctime_with_init");
+    TestSystem::start_test(test_4_create_ctime_with_copying,
+        " CTime.create_ctime_with_copying");
+    TestSystem::start_test(test_5_try_create_ctime_with_copying,
+        " CTime.try_create_ctime_with_copying");
+    TestSystem::start_test(test_6_create_ctime_with_str_init,
+        " CTime.create_ctime_with_str_init");
+    TestSystem::start_test(test_7_try_create_ctime_with_str_init,
+        " CTime.try_create_ctime_with_str_init");
+    TestSystem::start_test(test_8_convert_ctime_to_string,
+        " CTime.convert_ctime_to_string");
 
     TestSystem::print_final_info();
 
