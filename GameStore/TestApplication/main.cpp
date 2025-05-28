@@ -20,7 +20,7 @@ void set_color(int text_color, int bg_color) {
 
 namespace TestSystem {
 int count_success = 0, count_failed = 0;
-    
+
 void start_test(bool(*test)(), const char* name_of_test) {
     set_color(2, 0);
     std::cout << "[ RUN      ]";
