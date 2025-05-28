@@ -6,11 +6,12 @@
 #include "../Developer/developer.h"
 #include "../Game/game.h"
 #include "../User/user.h"
+#include "../TVector/tvector.h"
 
 class GameStore {
-    Game* _games;
-    User* _users;
-    Developer* _developers;
+    TVector<Game> _games;
+    TVector<User> _users;
+    TVector<Developer> _developers;
 };
 
 #endif  // GAMESTORE_GAMESTORE_GAMESTORE_H_

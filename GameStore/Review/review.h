@@ -10,8 +10,8 @@
 class User;
 
 class Review {
-    int _rate;  // _score
-    char* _text;
+    int _rate;
+    std::string _text;
     User* _user;
     Date _publication_date;
     CTime _publication_time;

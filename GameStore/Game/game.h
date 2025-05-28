@@ -6,19 +6,20 @@
 #include "../Date/date.h"
 #include "../Developer/developer.h"
 #include "../Review/review.h"
+#include "../TVector/tvector.h"
 
 class Review;
 class Developer;
 
 class Game {
-    char* _name;
+    std::string _name;
     int _rating;
-    char* _gaming_platform;
+    std::string _gaming_platform;
     Date _release_date;
-    char* _type;
-    char* _description;
-    char* _price;
-    Review* _reviews;
+    std::string _type;
+    std::string _description;
+    std::string _price;
+    TVector<Review> _reviews;
     Developer* _developer;
 };
 

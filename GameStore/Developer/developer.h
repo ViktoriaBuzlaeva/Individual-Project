@@ -4,14 +4,15 @@
 #define GAMESTORE_DEVELOPER_DEVELOPER_H_
 
 #include "../Game/game.h"
+#include "../TVector/tvector.h"
 
 class Game;
 
 class Developer {
-    char* _country;
-    char* _game_engine;
+    std::string _country;
+    std::string _game_engine;
     int _rating;
-    Game** _games;
+    TVector<Game*> _games;
 };
 
 #endif  // GAMESTORE_DEVELOPER_DEVELOPER_H_

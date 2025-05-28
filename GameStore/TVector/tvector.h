@@ -114,6 +114,9 @@ class TVector {
 
 template <class T>
 TVector<T>::TVector(size_t size) {
+    _data = nullptr;
+    _states = nullptr;
+
     set_memory(size);
 
     size_t i = 0;
@@ -127,6 +130,9 @@ TVector<T>::TVector(size_t size) {
 
 template <class T>
 TVector<T>::TVector(size_t size, const T* data) {
+    _data = nullptr;
+    _states = nullptr;
+
     set_memory(size);
 
     size_t i = 0;
@@ -141,6 +147,9 @@ TVector<T>::TVector(size_t size, const T* data) {
 
 template <class T>
 TVector<T>::TVector(size_t size, std::initializer_list<T> data) {
+    _data = nullptr;
+    _states = nullptr;
+
     set_memory(size);
 
     size_t i = 0;
@@ -157,6 +166,9 @@ TVector<T>::TVector(size_t size, std::initializer_list<T> data) {
 
 template <class T>
 TVector<T>::TVector(std::initializer_list<T>data) {
+    _data = nullptr;
+    _states = nullptr;
+
     set_memory(data.size());
 
     size_t i = 0;
@@ -175,6 +187,9 @@ template <class T>
 TVector<T>::TVector(const TVector<T>& other) {
     if (&other == NULL) throw std::logic_error
         ("Error in copy constructor: other vector doesn't exist!");
+    _data = nullptr;
+    _states = nullptr;
+
     set_memory(other._size);
 
     size_t j = 0;
@@ -192,6 +207,9 @@ TVector<T>::TVector(const TVector<T>& other) {
 
 template <class T>
 TVector<T>::TVector(size_t size, const T& value) {
+    _data = nullptr;
+    _states = nullptr;
+
     set_memory(size);
 
     size_t i = 0;
@@ -800,7 +818,7 @@ std::ostream& operator << (std::ostream& out, const TVector<T>& vec) {
 template <class T>
 void TVector<T>::set_memory(size_t size) noexcept {
     if (_data != nullptr) delete[] _data;
-    if (_states != nullptr)delete[] _states;
+    if (_states != nullptr) delete[] _states;
     _deleted = 0;
     if (_size != size) _size = size;
     _capacity = ((_size + _deleted) / STEP_OF_CAPACITY + 1) * STEP_OF_CAPACITY;
