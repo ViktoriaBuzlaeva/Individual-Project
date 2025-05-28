@@ -3,6 +3,8 @@
 #ifndef GAMESTORE_DEVELOPER_DEVELOPER_H_
 #define GAMESTORE_DEVELOPER_DEVELOPER_H_
 
+#include <string>
+
 #include "../Game/game.h"
 #include "../TVector/tvector.h"
 

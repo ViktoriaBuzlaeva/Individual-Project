@@ -3,6 +3,8 @@
 #ifndef GAMESTORE_GAME_GAME_H_
 #define GAMESTORE_GAME_GAME_H_
 
+#include <string>
+
 #include "../Date/date.h"
 #include "../Developer/developer.h"
 #include "../Review/review.h"

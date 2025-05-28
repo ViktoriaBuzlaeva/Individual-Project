@@ -3,6 +3,8 @@
 #ifndef GAMESTORE_USER_USER_H_
 #define GAMESTORE_USER_USER_H_
 
+#include <string>
+
 #include "../Date/date.h"
 #include "../Review/review.h"
 #include "../Game/game.h"

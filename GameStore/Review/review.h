@@ -3,6 +3,8 @@
 #ifndef GAMESTORE_REVIEW_REVIEW_H_
 #define GAMESTORE_REVIEW_REVIEW_H_
 
+#include <string>
+
 #include "../Date/date.h"
 #include "../Time/ctime.h"
 #include "../User/user.h"
