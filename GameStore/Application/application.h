@@ -1,9 +1,0 @@
-// Copyright 2025 Viktoria Buzlaeva
-
-#ifndef GAMESTORE_APPLICATION_APPLICATION_H_
-#define GAMESTORE_APPLICATION_APPLICATION_H_
-
-class Application {
-};
-
-#endif  // GAMESTORE_APPLICATION_APPLICATION_H_

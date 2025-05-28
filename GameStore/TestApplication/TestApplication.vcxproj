@@ -130,9 +130,6 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.vcxproj">
-      <Project>{b017df13-2e1c-464d-9eee-6572b61be8ff}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Date\Date.vcxproj">
       <Project>{3d12c0d5-477c-4a7a-8600-ddd3ea28c573}</Project>
     </ProjectReference>

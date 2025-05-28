@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 
-#include "../Application/application.h"
 #include "../Date/date.h"
 #include "../Developer/developer.h"
 #include "../Game/game.h"
@@ -1096,7 +1095,6 @@ bool test_8_convert_ctime_to_string() {
 }
 
 int main() {
-    Application application_1;
     Date date_1;
     Developer developer_1;
     Game game_1;
