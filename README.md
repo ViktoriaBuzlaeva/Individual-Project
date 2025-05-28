@@ -28,4 +28,6 @@
 ## Схема классов
 
 ![Схема классов](source/Diagram.jpg)
+
+## Класс вектор
 [Исследование std::vector](/source/STL_vector.docx)

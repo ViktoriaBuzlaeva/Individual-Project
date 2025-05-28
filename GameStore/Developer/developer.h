@@ -5,14 +5,16 @@
 
 #include <string>
 
+#include "../User/user.h"
 #include "../Game/game.h"
 #include "../TVector/tvector.h"
 
 class Game;
 
-class Developer {
+class Developer: public User {
+    std::string _name;
     std::string _country;
-    std::string _game_engine;
+    Date _founding_date;
     int _rating;
     TVector<Game*> _games;
 };

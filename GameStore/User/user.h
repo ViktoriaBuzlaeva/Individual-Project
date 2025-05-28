@@ -6,21 +6,12 @@
 #include <string>
 
 #include "../Date/date.h"
-#include "../Review/review.h"
-#include "../Game/game.h"
 #include "../TVector/tvector.h"
 
-class Game;
-class Review;
-
 class User {
-    std::string _name;
-    std::string _email;
+    std::string _login;
     std::string _password;
     Date _registration_date;
-    TVector<Review*> _reviews;
-    TVector<Game*> _purchased_games;
-    TVector<Game*> _wishlist_games;
 };
 
 #endif  // GAMESTORE_USER_USER_H_

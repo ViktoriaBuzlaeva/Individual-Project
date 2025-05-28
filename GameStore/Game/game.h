@@ -5,7 +5,6 @@
 
 #include <string>
 
-#include "../Date/date.h"
 #include "../Developer/developer.h"
 #include "../Review/review.h"
 #include "../TVector/tvector.h"
@@ -15,12 +14,13 @@ class Developer;
 
 class Game {
     std::string _name;
-    int _rating;
-    std::string _gaming_platform;
-    Date _release_date;
-    std::string _type;
     std::string _description;
+    std::string _type;
+    std::string _engine;
+    std::string _gaming_platform;
     std::string _price;
+    Date _release_date;
+    int _rating;
     TVector<Review> _reviews;
     Developer* _developer;
 };

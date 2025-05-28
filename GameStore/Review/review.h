@@ -5,16 +5,15 @@
 
 #include <string>
 
-#include "../Date/date.h"
 #include "../Time/ctime.h"
-#include "../User/user.h"
+#include "../Player/player.h"
 
-class User;
+class Player;
 
 class Review {
     int _rate;
     std::string _text;
-    User* _user;
+    Player* _author;
     Date _publication_date;
     CTime _publication_time;
 };
