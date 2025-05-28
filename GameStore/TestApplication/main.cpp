@@ -1243,7 +1243,7 @@ int main() {
         " TVector.replace_by_find_pointer");
     TestSystem::start_test(test_71_erase_after_delete,
         " TVector.erase_after_delete");
- 
+
     TestSystem::start_test(test_1_create_default_ctime,
         " CTime.create_default_ctime");
     TestSystem::start_test(test_2_create_ctime_with_init,
