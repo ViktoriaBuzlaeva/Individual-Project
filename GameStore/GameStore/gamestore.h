@@ -10,7 +10,7 @@
 
 class GameStore {
     TVector<Game> _games;
-    TVector<User> _players;
+    TVector<Player> _players;
     TVector<Developer> _developers;
 };
 
