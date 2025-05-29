@@ -4,14 +4,15 @@
 #define GAMESTORE_DATE_DATE_H_
 
 #include <iostream>
+#include <string>
 
 class Date {
     int _year;
     int _month;
     int _day;
 
-public:
-    Date(int year = 1, int month = 1, int day = 2000);
+ public:
+    explicit Date(int year = 1, int month = 1, int day = 2000);
     Date(const Date&);
 
     const int& year() const noexcept;
@@ -23,7 +24,7 @@ public:
 
     std::string to_string() const noexcept;
 
-private:
+ private:
     bool is_correct(int, int, int);
     bool is_leap_year(int);
     int days_in_month();
