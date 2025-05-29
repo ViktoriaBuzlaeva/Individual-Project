@@ -1094,6 +1094,42 @@ bool test_8_convert_ctime_to_string() {
     return TestSystem::check(t_str, t.to_string());
 }
 
+bool test_9_operator_equality_with_equal_times() {
+    bool expected_result = true;
+    bool actual_result = true;
+
+    CTime t1(22, 30, 59);
+    CTime t2(22, 30, 59);
+
+    actual_result &= (t1 == t2);
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_10_operator_inequality_with_not_equal_times() {
+    bool expected_result = true;
+    bool actual_result = true;
+
+    CTime t1(22, 30, 59);
+    CTime t2(23, 0, 0);
+
+    actual_result &= (t1 != t2);
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_11_operator_less_with_not_equal_times() {
+    bool expected_result = true;
+    bool actual_result = true;
+
+    CTime t1(22, 30, 59);
+    CTime t2(23, 0, 0);
+
+    actual_result &= (t1 < t2);
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
 bool test_1_create_default_date() {
     Date d;
 
@@ -1355,6 +1391,12 @@ int main() {
         " CTime.try_create_ctime_with_str_init");
     TestSystem::start_test(test_8_convert_ctime_to_string,
         " CTime.convert_ctime_to_string");
+    TestSystem::start_test(test_9_operator_equality_with_equal_times,
+        " CTime.operator_equality_with_equal_times");
+    TestSystem::start_test(test_10_operator_inequality_with_not_equal_times,
+        " CTime.operator_inequality_with_not_equal_times");
+    TestSystem::start_test(test_11_operator_less_with_not_equal_times,
+        " CTime.operator_less_with_not_equal_times");
 
     TestSystem::start_test(test_1_create_default_date,
         " Date.create_default_date");

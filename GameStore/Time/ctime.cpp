@@ -55,6 +55,25 @@ const int& CTime::seconds() const noexcept {
     return _seconds;
 }
 
+bool CTime::operator < (const CTime& other)const noexcept {
+    if (*(this) != other) {
+        if (_hours != other._hours) return _hours < other._hours;
+        if (_minutes != other._minutes) return _minutes < other._minutes;
+        return _seconds < other._seconds;
+    }
+    return false;
+}
+
+bool CTime::operator == (const CTime& other) const noexcept {
+    return _hours == other._hours
+        && _minutes == other._minutes
+        && _seconds == other._seconds;
+}
+
+bool CTime::operator != (const CTime& other) const noexcept {
+    return !(*(this) == other);
+}
+
 std::string CTime::to_string() const noexcept {
     std::ostringstream time;
     time << _hours << ":" << _minutes << ":" << _seconds;
@@ -63,7 +82,7 @@ std::string CTime::to_string() const noexcept {
 
 bool CTime::is_correct(int h, int m, int s) {
     if (h < 0 || h > 23 || m < 0 || m > 59 || s < 0 || s > 59) {
-        return 0;
+        return false;
     }
-    return 1;
+    return true;
 }

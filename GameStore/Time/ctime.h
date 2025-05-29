@@ -21,6 +21,10 @@ class CTime {
     const int& minutes() const noexcept;
     const int& seconds() const noexcept;
 
+    bool operator < (const CTime&)const noexcept;
+    bool operator == (const CTime&) const noexcept;
+    bool operator != (const CTime&) const noexcept;
+
     std::string to_string() const noexcept;
 
  private:
