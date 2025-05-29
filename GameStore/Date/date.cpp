@@ -1,5 +1,7 @@
 // Copyright 2025 Viktoria Buzlaeva
 
+#include <string>
+
 #include "/GitHub/Individual-Project/GameStore/Date/date.h"
 
 Date::Date(int day, int month, int year) {
