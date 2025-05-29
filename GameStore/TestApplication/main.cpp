@@ -1094,6 +1094,103 @@ bool test_8_convert_ctime_to_string() {
     return TestSystem::check(t_str, t.to_string());
 }
 
+bool test_1_create_default_date() {
+    Date d;
+
+    return TestSystem::check(1, d.day()) &&
+        TestSystem::check(1, d.month()) &&
+        TestSystem::check(2000, d.year());
+}
+
+bool test_2_create_date_with_init() {
+    Date d(2, 12, 1999);
+
+    return TestSystem::check(2, d.day()) &&
+        TestSystem::check(12, d.month()) &&
+        TestSystem::check(1999, d.year());
+}
+
+bool test_3_try_create_date_with_init() {
+    bool expected_result = true;
+    bool actual_result = false;
+
+    try {
+        Date d(-2, 12, 1999);
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_4_create_date_with_copying() {
+    Date d1(2, 12, 1999);
+    Date d2(d1);
+
+    return TestSystem::check(d1.day(), d2.day()) &&
+        TestSystem::check(d2.month(), d2.month()) &&
+        TestSystem::check(d2.year(), d2.year());
+}
+
+bool test_5_try_create_date_with_copying() {
+    bool expected_result = true;
+    bool actual_result = false;
+    Date* d1 = NULL;
+
+    try {
+        Date d2(*d1);
+    }
+    catch (const std::exception& ex) {
+        actual_result = true;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_6_operator_equality_with_equal_dates() {
+    bool expected_result = true;
+    bool actual_result = true;
+
+    Date d1(2, 12, 1999);
+    Date d2(2, 12, 1999);
+
+    actual_result &= (d1 == d2);
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_7_operator_inequality_with_not_equal_dates() {
+    bool expected_result = true;
+    bool actual_result = true;
+
+    Date d1(2, 12, 1999);
+    Date d2(3, 12, 1999);
+
+    actual_result &= (d1 != d2);
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_8_operator_less_with_not_equal_dates() {
+    bool expected_result = true;
+    bool actual_result = true;
+
+    Date d1(3, 12, 1999);
+    Date d2(2, 12, 2000);
+
+    actual_result &= (d1 < d2);
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_9_convert_date_to_string() {
+    std::string d_str = "5.6.2006";
+    Date d(5, 6, 2006);
+
+    return TestSystem::check(d_str, d.to_string());
+}
+
 int main() {
     Date date_1;
     Developer developer_1;
@@ -1258,6 +1355,25 @@ int main() {
         " CTime.try_create_ctime_with_str_init");
     TestSystem::start_test(test_8_convert_ctime_to_string,
         " CTime.convert_ctime_to_string");
+
+    TestSystem::start_test(test_1_create_default_date,
+        " Date.create_default_date");
+    TestSystem::start_test(test_2_create_date_with_init,
+        " Date.create_date_with_init");
+    TestSystem::start_test(test_3_try_create_date_with_init,
+        " Date.try_create_date_with_init");
+    TestSystem::start_test(test_4_create_date_with_copying,
+        " Date.create_date_with_copying");
+    TestSystem::start_test(test_5_try_create_date_with_copying,
+        " Date.try_create_date_with_copying");
+    TestSystem::start_test(test_6_operator_equality_with_equal_dates,
+        " Date.operator_equality_with_equal_dates");
+    TestSystem::start_test(test_7_operator_inequality_with_not_equal_dates,
+        " Date.operator_inequality_with_not_equal_dates");
+    TestSystem::start_test(test_8_operator_less_with_not_equal_dates,
+        " Date.operator_less_with_not_equal_dates");
+    TestSystem::start_test(test_9_convert_date_to_string,
+        " Date.convert_date_to_string");
 
     TestSystem::print_final_info();
 
