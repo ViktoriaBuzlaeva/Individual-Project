@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 
 class Date {
     int _year;
@@ -12,7 +13,7 @@ class Date {
     int _day;
 
  public:
-    explicit Date(int year = 1, int month = 1, int day = 2000);
+    explicit Date(int day = 1, int month = 1, int year = 2000);
     Date(const Date&);
 
     const int& year() const noexcept;
@@ -21,13 +22,14 @@ class Date {
 
     bool operator < (const Date&)const noexcept;
     bool operator == (const Date&) const noexcept;
+    bool operator != (const Date&) const noexcept;
 
     std::string to_string() const noexcept;
 
  private:
     bool is_correct(int, int, int);
     bool is_leap_year(int);
-    int days_in_month();
+    int days_in_month(int, int);
 };
 
 #endif  // GAMESTORE_DATE_DATE_H_
