@@ -86,8 +86,8 @@ private:
         // LoginBox
         //
         this->LoginBox->Font = (gcnew System::Drawing::Font
-            (L"Microsoft Sans Serif", 15.75F, 
-            System::Drawing::FontStyle::Regular, 
+            (L"Microsoft Sans Serif", 15.75F,
+            System::Drawing::FontStyle::Regular,
             System::Drawing::GraphicsUnit::Point,
             static_cast<System::Byte>(204)));
         this->LoginBox->Location = System::Drawing::Point(135, 105);
@@ -153,7 +153,7 @@ private:
         this->Controls->Add(this->label3);
         this->Controls->Add(this->label2);
         this->Name = L"LoginWindow";
-        this->StartPosition = 
+        this->StartPosition =
             System::Windows::Forms::FormStartPosition::CenterScreen;
         this->Text = L"LoginWindow";
         this->ResumeLayout(false);
@@ -162,8 +162,8 @@ private:
 #pragma endregion
 private: System::Void SignInButton_Click
        (System::Object^ sender, System::EventArgs^ e) {
-	MessageBox::Show("You are signed in!");
-	this->Close();
+    MessageBox::Show("You are signed in!");
+    this->Close();
 }
 };
-}
+}  // namespace CppCLRWinFormsProject"
