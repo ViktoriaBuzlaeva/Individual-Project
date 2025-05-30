@@ -1,3 +1,5 @@
+// Copyright 2025 Viktoria Buzlaeva
+
 #include "pch.h"
 
 using namespace System;

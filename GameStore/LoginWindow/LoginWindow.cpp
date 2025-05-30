@@ -1,2 +1,4 @@
+// Copyright 2025 Viktoria Buzlaeva
+
 #include "pch.h"
-// #include "LoginWindow.h"
+#include "/GitHub/Individual-Project/GameStore/LoginWindow/LoginWindow.h"
