@@ -18,9 +18,6 @@ public ref class LoginWindow : public System::Windows::Forms::Form {
  public:
     LoginWindow(void) {
         InitializeComponent();
-        //
-        //TODO: Add the constructor code here
-        //
     }
 
  protected:
@@ -166,4 +163,4 @@ private: System::Void SignInButton_Click
     this->Close();
 }
 };
-}  // namespace CppCLRWinFormsProject"
+}  // namespace CppCLRWinFormsProject
