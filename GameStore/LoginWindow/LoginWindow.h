@@ -148,7 +148,7 @@ System::Drawing::GraphicsUnit::Point,
         // LoginWindow
         //
         this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
-        this->AutoScaleMode = 
+        this->AutoScaleMode =
             System::Windows::Forms::AutoScaleMode::Font;
         this->BackColor = System::Drawing::Color::LightGray;
         this->ClientSize = System::Drawing::Size(484, 261);
@@ -159,7 +159,7 @@ System::Drawing::GraphicsUnit::Point,
         this->Controls->Add(this->label3);
         this->Controls->Add(this->label2);
         this->Name = L"LoginWindow";
-        this->StartPosition = 
+        this->StartPosition =
             System::Windows::Forms::FormStartPosition::CenterScreen;
         this->Text = L"LoginWindow";
         this->ResumeLayout(false);
