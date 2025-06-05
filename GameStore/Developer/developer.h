@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "../Date/date.h"
 #include "../User/user.h"
 #include "../Game/game.h"
 #include "../TVector/tvector.h"

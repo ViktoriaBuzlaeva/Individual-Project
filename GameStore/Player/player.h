@@ -15,6 +15,7 @@ class Review;
 
 class Player: public User {
     std::string _name;
+    Date _registration_date;
     TVector<Review*> _reviews;
     TVector<Game*> _purchased_games;
     TVector<Game*> _wishlist_games;

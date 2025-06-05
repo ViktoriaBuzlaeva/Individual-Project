@@ -12,6 +12,7 @@
 #ifndef GAMESTORE_LOGINWINDOW_PCH_H_
 #define GAMESTORE_LOGINWINDOW_PCH_H_
 
-// add headers that you want to pre-compile here
+#include <msclr/marshal_cppstd.h>
+#include "../GameStore/GameStore.h"
 
 #endif  // GAMESTORE_LOGINWINDOW_PCH_H_

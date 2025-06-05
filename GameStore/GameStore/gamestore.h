@@ -10,8 +10,13 @@
 
 class GameStore {
     TVector<Game> _games;
-    TVector<Player> _players;
-    TVector<Developer> _developers;
+    TVector<User> _users;
+
+ public:
+    GameStore();
+
+    bool check_user_login(const std::string&);
+    bool check_user_for_signing(const User&);
 };
 
 #endif  // GAMESTORE_GAMESTORE_GAMESTORE_H_
