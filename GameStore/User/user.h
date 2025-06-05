@@ -5,13 +5,18 @@
 
 #include <string>
 
-#include "../Date/date.h"
-#include "../TVector/tvector.h"
-
 class User {
     std::string _login;
     std::string _password;
-    Date _registration_date;
+
+ public:
+    explicit User(const std::string& login = "",
+        const std::string& password = "");
+
+    const std::string login() const noexcept;
+    const std::string password() const noexcept;
+
+    bool operator == (const User&) const noexcept;
 };
 
 #endif  // GAMESTORE_USER_USER_H_

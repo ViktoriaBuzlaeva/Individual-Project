@@ -66,6 +66,7 @@ bool Date::is_correct(int d, int m, int y) {
 
 bool Date::is_leap_year(int y) {
     if (y % 4 == 0 && y % 100 != 0 || y % 400 == 0) return true;
+    return false;
 }
 
 int Date::days_in_month(int m, int y) {
