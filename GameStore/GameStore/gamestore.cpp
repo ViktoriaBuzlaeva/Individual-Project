@@ -1,5 +1,6 @@
 // Copyright 2025 Viktoria Buzlaeva
 
+#include <string>
 #include "/GitHub/Individual-Project/GameStore/GameStore/gamestore.h"
 
 GameStore::GameStore() {

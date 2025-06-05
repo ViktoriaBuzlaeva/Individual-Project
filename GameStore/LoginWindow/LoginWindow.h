@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <string>
+
 namespace CppCLRWinFormsProject {
 
 using namespace System;
@@ -57,41 +59,49 @@ private:
         this->label3 = (gcnew System::Windows::Forms::Label());
         this->label2 = (gcnew System::Windows::Forms::Label());
         this->SuspendLayout();
-        // 
+        //
         // label1
-        // 
+        //
         this->label1->AutoSize = true;
-        this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 48, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+        this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif",
+            48, System::Drawing::FontStyle::Regular,
+            System::Drawing::GraphicsUnit::Point,
             static_cast<System::Byte>(204)));
         this->label1->Location = System::Drawing::Point(65, 9);
         this->label1->Name = L"label1";
         this->label1->Size = System::Drawing::Size(361, 73);
         this->label1->TabIndex = 0;
         this->label1->Text = L"GameStore";
-        // 
+        //
         // PasswordBox
-        // 
-        this->PasswordBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+        //
+        this->PasswordBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif",
+            15.75F, System::Drawing::FontStyle::Regular,
+            System::Drawing::GraphicsUnit::Point,
             static_cast<System::Byte>(204)));
         this->PasswordBox->Location = System::Drawing::Point(135, 160);
         this->PasswordBox->Name = L"PasswordBox";
         this->PasswordBox->PasswordChar = '*';
         this->PasswordBox->Size = System::Drawing::Size(208, 31);
         this->PasswordBox->TabIndex = 2;
-        // 
+        //
         // LoginBox
-        // 
-        this->LoginBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+        //
+        this->LoginBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif",
+            15.75F, System::Drawing::FontStyle::Regular,
+            System::Drawing::GraphicsUnit::Point,
             static_cast<System::Byte>(204)));
         this->LoginBox->Location = System::Drawing::Point(135, 105);
         this->LoginBox->Name = L"LoginBox";
         this->LoginBox->Size = System::Drawing::Size(208, 31);
         this->LoginBox->TabIndex = 3;
-        // 
+        //
         // SignInButton
-        // 
+        //
         this->SignInButton->BackColor = System::Drawing::Color::White;
-        this->SignInButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+        this->SignInButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif",
+            12, System::Drawing::FontStyle::Regular,
+            System::Drawing::GraphicsUnit::Point,
             static_cast<System::Byte>(204)));
         this->SignInButton->Location = System::Drawing::Point(135, 210);
         this->SignInButton->Name = L"SignInButton";
@@ -99,35 +109,41 @@ private:
         this->SignInButton->TabIndex = 4;
         this->SignInButton->Text = L"Sign in";
         this->SignInButton->UseVisualStyleBackColor = false;
-        this->SignInButton->Click += gcnew System::EventHandler(this, &LoginWindow::SignInButton_Click);
-        // 
+        this->SignInButton->Click += gcnew System::EventHandler(this,
+            &LoginWindow::SignInButton_Click);
+        //
         // label3
-        // 
+        //
         this->label3->AutoSize = true;
-        this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+        this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif",
+            14.25F, System::Drawing::FontStyle::Regular,
+            System::Drawing::GraphicsUnit::Point,
             static_cast<System::Byte>(204)));
         this->label3->Location = System::Drawing::Point(131, 139);
         this->label3->Name = L"label3";
         this->label3->Size = System::Drawing::Size(92, 24);
         this->label3->TabIndex = 6;
         this->label3->Text = L"Password";
-        // 
+        //
         // label2
-        // 
+        //
         this->label2->AutoSize = true;
         this->label2->BackColor = System::Drawing::Color::LightGray;
-        this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+        this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif",
+            14.25F, System::Drawing::FontStyle::Regular,
+System::Drawing::GraphicsUnit::Point,
             static_cast<System::Byte>(204)));
         this->label2->Location = System::Drawing::Point(131, 82);
         this->label2->Name = L"label2";
         this->label2->Size = System::Drawing::Size(57, 24);
         this->label2->TabIndex = 8;
         this->label2->Text = L"Login";
-        // 
+        //
         // LoginWindow
-        // 
+        //
         this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
-        this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+        this->AutoScaleMode = 
+            System::Windows::Forms::AutoScaleMode::Font;
         this->BackColor = System::Drawing::Color::LightGray;
         this->ClientSize = System::Drawing::Size(484, 261);
         this->Controls->Add(this->SignInButton);
@@ -137,7 +153,8 @@ private:
         this->Controls->Add(this->label3);
         this->Controls->Add(this->label2);
         this->Name = L"LoginWindow";
-        this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
+        this->StartPosition = 
+            System::Windows::Forms::FormStartPosition::CenterScreen;
         this->Text = L"LoginWindow";
         this->ResumeLayout(false);
         this->PerformLayout();

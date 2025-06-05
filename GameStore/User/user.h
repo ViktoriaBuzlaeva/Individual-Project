@@ -10,7 +10,8 @@ class User {
     std::string _password;
 
  public:
-    User(const std::string& login = "", const std::string& password = "");
+    explicit User(const std::string& login = "",
+        const std::string& password = "");
 
     const std::string login() const noexcept;
     const std::string password() const noexcept;

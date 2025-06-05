@@ -3,6 +3,7 @@
 #ifndef GAMESTORE_GAMESTORE_GAMESTORE_H_
 #define GAMESTORE_GAMESTORE_GAMESTORE_H_
 
+#include <string>
 #include "../Player/player.h"
 #include "../Developer/developer.h"
 #include "../Game/game.h"

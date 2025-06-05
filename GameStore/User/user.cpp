@@ -1,5 +1,6 @@
 // Copyright 2025 Viktoria Buzlaeva
 
+#include <string>
 #include "/GitHub/Individual-Project/GameStore/User/user.h"
 
 User::User(const std::string& login, const std::string& password) :
