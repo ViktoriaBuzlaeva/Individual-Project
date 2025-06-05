@@ -63,7 +63,8 @@ private:
         // label1
         //
         this->label1->AutoSize = true;
-        this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif",
+        this->label1->Font = (gcnew System::Drawing::Font
+            (L"Microsoft Sans Serif",
             48, System::Drawing::FontStyle::Regular,
             System::Drawing::GraphicsUnit::Point,
             static_cast<System::Byte>(204)));
@@ -75,7 +76,8 @@ private:
         //
         // PasswordBox
         //
-        this->PasswordBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif",
+        this->PasswordBox->Font = (gcnew System::Drawing::Font
+            (L"Microsoft Sans Serif",
             15.75F, System::Drawing::FontStyle::Regular,
             System::Drawing::GraphicsUnit::Point,
             static_cast<System::Byte>(204)));
@@ -87,7 +89,8 @@ private:
         //
         // LoginBox
         //
-        this->LoginBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif",
+        this->LoginBox->Font = (gcnew System::Drawing::Font
+            (L"Microsoft Sans Serif",
             15.75F, System::Drawing::FontStyle::Regular,
             System::Drawing::GraphicsUnit::Point,
             static_cast<System::Byte>(204)));
@@ -99,7 +102,8 @@ private:
         // SignInButton
         //
         this->SignInButton->BackColor = System::Drawing::Color::White;
-        this->SignInButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif",
+        this->SignInButton->Font = (gcnew System::Drawing::Font
+            (L"Microsoft Sans Serif",
             12, System::Drawing::FontStyle::Regular,
             System::Drawing::GraphicsUnit::Point,
             static_cast<System::Byte>(204)));
@@ -115,7 +119,8 @@ private:
         // label3
         //
         this->label3->AutoSize = true;
-        this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif",
+        this->label3->Font = (gcnew System::Drawing::Font
+            (L"Microsoft Sans Serif",
             14.25F, System::Drawing::FontStyle::Regular,
             System::Drawing::GraphicsUnit::Point,
             static_cast<System::Byte>(204)));
@@ -129,7 +134,8 @@ private:
         //
         this->label2->AutoSize = true;
         this->label2->BackColor = System::Drawing::Color::LightGray;
-        this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif",
+        this->label2->Font = (gcnew System::Drawing::Font
+            (L"Microsoft Sans Serif",
             14.25F, System::Drawing::FontStyle::Regular,
 System::Drawing::GraphicsUnit::Point,
             static_cast<System::Byte>(204)));
@@ -158,7 +164,6 @@ System::Drawing::GraphicsUnit::Point,
         this->Text = L"LoginWindow";
         this->ResumeLayout(false);
         this->PerformLayout();
-
     }
 #pragma endregion
 private: System::Void SignInButton_Click
